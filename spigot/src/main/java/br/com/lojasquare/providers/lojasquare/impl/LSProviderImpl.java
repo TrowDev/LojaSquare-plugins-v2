@@ -7,6 +7,7 @@ import br.com.lojasquare.utils.HttpResponse;
 import br.com.lojasquare.utils.enums.LSEntregaStatus;
 import br.com.lojasquare.utils.model.ItemInfo;
 import br.com.lojasquare.utils.model.ProdutoInfo;
+import br.com.lojasquare.utils.model.ValidaIpInfo;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import lombok.Getter;
@@ -71,7 +72,7 @@ public class LSProviderImpl implements ILSProvider {
         try {
             HttpResponse result = requestProvider.get(pl.getLojaSquare().getServerRequest()
                     + String.format("/v1/produtos?tokenSubServidor=%s", pl.getLojaSquare().getTokenServidor()));
-            if (result.getObject() == null){
+            if (Objects.isNull(result) || Objects.isNull(result.getObject())){
                 return prods;
             }
             if(result.getObject() instanceof  JsonArray) {
@@ -117,19 +118,39 @@ public class LSProviderImpl implements ILSProvider {
     }
 
     @Override
-    public boolean activateAccount(String codigo) {
+    public boolean activateAccount(String codigo, String usuario) {
         if(Objects.isNull(codigo)) {
             return false;
         }
         try {
             HttpResponse httpResponse = requestProvider.put(pl.getLojaSquare().getServerRequest()
-                    + String.format("/v1/clientes/activate?codigo=%s", codigo));
+                    + String.format("/v1/clientes/activate?codigo=%s&usuario=%s", codigo,usuario));
 
             return !Objects.isNull(httpResponse) && !Objects.isNull(httpResponse.getObject());
         } catch (IOException e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public ValidaIpInfo getIpMaquina() {
+        ValidaIpInfo validaIp   = ValidaIpInfo.builder().ip("IP não encontrado.").sucesso(false).build();
+        String naoIdentificado  = "ip não identificado.";
+        try {
+            String endpoint     = "/v1/sites/extensoes";
+            HttpResponse result = requestProvider.get(
+                    pl.getLojaSquare().getServerRequest() + endpoint);
+            if (Objects.isNull(result) || Objects.isNull(result.getObject())){
+                return validaIp;
+            }
+            validaIp = new Gson().fromJson(result.getObject(), ValidaIpInfo.class);
+
+            return validaIp;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return validaIp;
+        }
     }
 
 }

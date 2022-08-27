@@ -7,6 +7,8 @@ import lombok.Getter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 @AllArgsConstructor
 public class CmdMain implements CommandExecutor {
@@ -26,15 +28,29 @@ public class CmdMain implements CommandExecutor {
                     sender.sendMessage(pl.getMsg("Msg.Use_Cmd_LSite"));
                     return false;
                 }
+                if(!isPlayer(sender)) return false;
                 String codigo = args[1];
-                if(lsProvider.activateAccount(codigo)) {
-                    sender.sendMessage(pl.getMsg("Msg.Conta_Ativada"));
-                } else {
-                    sender.sendMessage(pl.getMsg("Msg.Erro_Ao_Ativar_Conta"));
-                }
+                new BukkitRunnable(){
+                    @Override
+                    public void run() {
+                        if(lsProvider.activateAccount(codigo, sender.getName())) {
+                            sender.sendMessage(pl.getMsg("Msg.Conta_Ativada"));
+                        } else {
+                            sender.sendMessage(pl.getMsg("Msg.Erro_Ao_Ativar_Conta"));
+                        }
+                    }
+                }.runTaskAsynchronously(pl);
             }
             return true;
         }
         return false;
+    }
+
+    private boolean isPlayer(CommandSender sender) {
+        if(!(sender instanceof Player)) {
+            sender.sendMessage("§cComando exclusivo para jogadores.");
+            return false;
+        }
+        return true;
     }
 }

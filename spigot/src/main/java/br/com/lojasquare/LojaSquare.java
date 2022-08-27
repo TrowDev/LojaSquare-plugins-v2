@@ -10,6 +10,7 @@ import br.com.lojasquare.providers.request.IRequestProvider;
 import br.com.lojasquare.utils.ConfigManager;
 import br.com.lojasquare.utils.PluginLoadUtil;
 import br.com.lojasquare.utils.SiteUtil;
+import br.com.lojasquare.utils.model.ValidaIpInfo;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -22,6 +23,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class LojaSquare extends JavaPlugin{
 	
@@ -122,20 +124,18 @@ public class LojaSquare extends JavaPlugin{
 	public void checarIPCorreto(final ConsoleCommandSender b,final String nome){
 		new BukkitRunnable() {
 			public void run() {
-				String result = getLojaSquare().get("/v1/sites/extensoes");
-				if ( result == null || !result.contains("true")) {
+				ValidaIpInfo result = lsProvider.getIpMaquina();
+				if (Objects.isNull(result) || !result.isSucesso()) {
 					b.sendMessage("§3[LojaSquare] §cDesativado...");
 					b.sendMessage("§3Criador: §3Trow");
-					b.sendMessage("§cMotivo: " + result);
+					b.sendMessage("§cMotivo: " + result.getIp());
 					b.sendMessage("§3Key-API: §a"+nome);
 					b.sendMessage("§ePara atualizar o IP, acesse: §ahttps://painel.lojasquare.net/pages/config/site§e e clique em '§aAtivacao Automatica§e'");
 					b.sendMessage("§6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
 					Bukkit.getPluginManager().disablePlugin(pl);
 					return;
 				}
-				if(result.contains(",")) {
-					ls.setIpMaquina(result.split(",")[1]);
-				}
+				ls.setIpMaquina(result.getIp());
 				b.sendMessage("§3[LojaSquare] §bIP da maquina validado!");
 			}
 		}.runTaskAsynchronously(pl);

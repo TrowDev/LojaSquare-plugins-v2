@@ -1,11 +1,13 @@
 package br.com.lojasquare.utils;
 
 import com.google.gson.JsonElement;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
-@AllArgsConstructor
+@Builder
 @Data
+@ToString
 public class HttpResponse {
     private final int code;
     private final JsonElement object;

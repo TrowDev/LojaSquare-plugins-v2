@@ -47,12 +47,22 @@ public class RequestProviderImpl implements IRequestProvider {
 
             ms  = msCalc.calculate();
 
-            return new HttpResponse(statusCode, parser.parse(!sb.toString().equals("") ? sb.toString() : "{}"),ms,null);
+            return HttpResponse.builder()
+                    .code(statusCode)
+                    .object(parser.parse(!sb.toString().equals("") ? sb.toString() : "{}"))
+                    .ms(ms)
+                    .message(null)
+                    .build();
         }
 
         ms = msCalc.calculate();
 
-        return new HttpResponse(statusCode, null, ms, LSResponseEnum.findByCode(statusCode).getMessage());
+        return HttpResponse.builder()
+                .code(statusCode)
+                .object(null)
+                .ms(ms)
+                .message(LSResponseEnum.findByCode(statusCode).getMessage())
+                .build();
     }
 
     @Override
@@ -69,10 +79,22 @@ public class RequestProviderImpl implements IRequestProvider {
         ms  = msCalc.calculate();
 
         if (statusCode == 200 || statusCode == 201 || statusCode == 204) {
-            return new HttpResponse(statusCode, parser.parse("{}"), ms,null);
+
+            return HttpResponse.builder()
+                    .code(statusCode)
+                    .object(parser.parse("{}"))
+                    .ms(ms)
+                    .message(null)
+                    .build();
         }
 
-        return new HttpResponse(statusCode, null, ms, LSResponseEnum.findByCode(statusCode).getMessage());
+
+        return HttpResponse.builder()
+                .code(statusCode)
+                .object(null)
+                .ms(ms)
+                .message(LSResponseEnum.findByCode(statusCode).getMessage())
+                .build();
     }
 
     private HttpsURLConnection buildDefaultConnection(HttpsURLConnection c, String method) {
