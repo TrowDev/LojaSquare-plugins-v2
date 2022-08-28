@@ -18,7 +18,7 @@ public class PluginLoadUtil {
 		ls.setConnectionTimeout(pl.getConfig().getInt("LojaSquare.Connection_Timeout",1500));
 		ls.setReadTimeout(pl.getConfig().getInt("LojaSquare.Read_Timeout",3000));
 		ls.setDebug(pl.canDebug());
-		ls.setServerRequest("https://api-dev.lojasquare.net");
+		ls.setServerRequest("https://api.lojasquare.net");
 		requestProvider = new RequestProviderImpl(ls);
 		provider = new LSProviderImpl(requestProvider, pl);
 		pl.setLsProvider(provider);
