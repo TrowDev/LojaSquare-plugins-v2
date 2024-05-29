@@ -7,7 +7,6 @@ import br.com.lojasquare.utils.SiteUtil;
 import br.com.lojasquare.utils.enums.LSResponseEnum;
 import com.google.gson.JsonParser;
 import lombok.Getter;
-import lombok.var;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;

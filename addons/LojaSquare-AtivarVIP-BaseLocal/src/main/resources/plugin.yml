@@ -1,0 +1,5 @@
+name: ${project.name}
+version: ${project.version}
+main: br.com.lojasquare.LojaSquare
+author: TrowDev
+website: https://www.lojasquare.com.br/

@@ -1,0 +1,3 @@
+> Precisa do PlaceholderAPI
+> Caso use Featherboards, colocar: {placeholderapi_morais_tgcash}
+> Caso não use, colocar: %morais_tgcash%

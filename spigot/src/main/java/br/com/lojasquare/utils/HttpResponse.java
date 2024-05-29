@@ -5,12 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
-@Builder
 @Data
 @ToString
+@Builder
 public class HttpResponse {
-    private final int code;
-    private final JsonElement object;
-    private final long ms;
-    private final String message;
+    private int code;
+    private JsonElement object;
+    private long ms;
+    private String message;
 }

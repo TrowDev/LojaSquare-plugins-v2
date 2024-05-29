@@ -1,0 +1,25 @@
+Olá!
+Tudo bem?!
+Primeiramente, seja bem-vindo à Loja Square.
+Esperamos que sua experiência conosco seja uma das melhores ^^
+#
+
+Agora vamos aos pontos que queremos tratar aqui!
+
+1. O plugin 'LojaSquare - Ativacao Automatica.jar' (principal) fará a conexão na API da LojaSquare, identificará as entregas pendentes e realizará as entregas, conforme é proposto pela plataforma.
+
+2. O plugin 'LojaSquare-BD-Local.jar' deve ser usado em conjunto com o 'Bot-LS-Busca-Pedidos'.
+    Ou seja, é necessário contratar uma host de BotJS para hospedar o bot. Voce pode olhar opções de plano em: https://hostsquare.com.br/botjs-ca.html
+
+    O plugin, diferentemente do plugin 'LojaSquare - Ativacao Automatica.jar', vai se conectar na mesma base de dados do Bot e buscar as entregas dessa base de dados local (fora do controle da Plataforma LojaSquare).
+    Ou seja, esse plugin não se conectará diretamente à API da LojaSquare. Quem fará esse papel será o 'Bot-LS-Busca-Pedidos'.
+
+
+3. Os plugins TGVIP e TGCash disponibilizados neste Download NÃO são obrigatórios.
+    Disponibilizamos eles pois eles funcionam perfeitamente bem com a plataforma.
+    Entretanto, caso você tenha um programador oficial ou já tenha um plugin de vip/cash, fique a vontade para usá-lo!
+
+Agradecemos sua atenção!
+
+Atenciosamente,
+Equipe LojaSquare.

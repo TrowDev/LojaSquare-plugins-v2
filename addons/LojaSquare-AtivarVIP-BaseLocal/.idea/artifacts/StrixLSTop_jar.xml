@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="LojaSquare:jar">
+    <output-path>$PROJECT_DIR$/../../../Teste de pl/plugins</output-path>
+    <root id="archive" name="LojaSquare.jar">
+      <element id="module-output" name="LojaSquare" />
+    </root>
+  </artifact>
+</component>

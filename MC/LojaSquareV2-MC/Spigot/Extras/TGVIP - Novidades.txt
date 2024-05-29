@@ -1,0 +1,14 @@
+Versao: 8.9
+- Corrigido erro de senhas com + ou % não conectar ao Banco de Dados.
+
+Versao: 8.8
+- Corrigido erro no Mohist.
+
+Versao: 8.5
+- Atualizado modo de checagem para formato assincrono. Assim não irá travar o servidor enquanto tenta conexão com o site.
+
+Versao: 8.2
+- Adicionado menu GUI para mostrar as Keys VIP que um player tem.
+	OBS: Nas versões abaixo da 1.8 não funcionará o sistema de clicar no item do GUI e ativar o VIP.
+		 Versao 1.8 e acima, ao clicar no item o player ativará o VIP.
+		 Para isso, é necessário que utilizem os plugins ID-Library e NBTItem.
