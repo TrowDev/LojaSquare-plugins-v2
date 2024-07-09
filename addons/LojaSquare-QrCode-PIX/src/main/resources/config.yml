@@ -1,0 +1,61 @@
+#######################################################################################
+#                                                                                     #
+# ██╗      ██████╗      ██╗ █████╗ ███████╗ ██████╗ ██╗   ██╗ █████╗ ██████╗ ███████╗ #
+# ██║     ██╔═══██╗     ██║██╔══██╗██╔════╝██╔═══██╗██║   ██║██╔══██╗██╔══██╗██╔════╝ #
+# ██║     ██║   ██║     ██║███████║███████╗██║   ██║██║   ██║███████║██████╔╝█████╗   #
+# ██║     ██║   ██║██   ██║██╔══██║╚════██║██║▄▄ ██║██║   ██║██╔══██║██╔══██╗██╔══╝   #
+# ███████╗╚██████╔╝╚█████╔╝██║  ██║███████║╚██████╔╝╚██████╔╝██║  ██║██║  ██║███████╗ #
+# ╚══════╝ ╚═════╝  ╚════╝ ╚═╝  ╚═╝╚══════╝ ╚══▀▀═╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ #
+#                                                                                     #
+#######################################################################################
+#
+# No final do arquivo tem alguns exemplos de erros e a solução para eles.
+# Além de um pequeno FAQ.
+#
+# VARIÁVEIS PARA ARQUIVO produtos.yml
+#
+# @player = Player que comprou
+# @qnt    = quantidade que foi adquirida pelo player
+# @grupo  = Grupo que voce configurou para o pacote no seu painel. Neste caso, VIPFerro
+# @dias   = Quantidade de dias que voce configurou para o pacote no seu painel.
+#
+#
+LojaSquare:
+  # Essa opção irá imprimir uma mensagem de status para quem é op.
+  # Exemplo da impressão: https://prnt.sc/smvuew
+  # Caso queira que isso não apareça, marque Debug como false.
+  Debug: true
+  # A opcao Smart_Delivery funciona da seguinte forma:
+  # Se o Smart_Delivery estiver marcado como true, e um player comprar 10 Vips no site. Ao inves de o plugin executar 10x o 
+  # comando que voce colocou, sera executado apenas 1x com a quantidade 10 embutida no placeholder @qnt
+  # (@qnt fica la nos comandos dos grupos, ali em baixo).
+  # Ou seja, o plugin sera inteligente e executara menos comandos, realizando a entrega e trazendo um melhor desempenho.
+  # Se o Smart_Delivery estiver marcado como false, o plugin ira executar 10x o comando que voce colocou 
+  # (ou a quantidade de vezes que o player comprou). Entao se voce tiver pacote de cash e o player comprar 500 pacotes de cash, o
+  # plugin ira executar 500x os comandos de entrega do cash.
+  # Ai vai depender de como voce prefere a entrega. Recomendamos deixar true.
+  Smart_Delivery: true
+  #
+  # Pegue sua KEY API aqui: https://painel.lojasquare.net/pages/conta/dados (ABA: SEGURANÇA)
+  # KEY-API Aqui
+  KEY_KEY: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  # Pegue sua SECRET API aqui: https://painel.lojasquare.net/pages/conta/dados (ABA: SEGURANÇA)
+  # SECRET_KEY Aqui
+  SECRET_KEY: "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+  # Nome do servidor cadastrado aqui: https://painel.lojasquare.net/pages/pacotes/servidores
+  Servidor: "Nome-Do-Servidor"
+  Token_Servidor: "BBBBBBBBBBBBBBBBBBBB"
+  # Tempo que o plugin tentará se conectar com o site.
+  Connection_Timeout: 10000
+  Read_Timeout: 10000
+
+Config:
+  HTTPS: true
+
+Msg:
+  # Essa mensagem será exibida ao player quando ele tiver um produto não configurado para ser entregue.
+  Produto_Nao_Configurado: "&4[LojaSquare] &cVocê tem um produto para ser entregue, porém o grupo do produto nao está configurado. Grupo: &a@grupo"
+  Limpe_Seu_Inventario: "&4[LojaSquare] &cLimpe seu inventario para receber o produto do grupo &a@grupo"
+  Use_Cmd_LSite: "&4[LojaSquare] &cUse: &a/lsite <ativar> &a<codigo>"
+  Conta_Ativada: "&3[LojaSquare] &bConta ativada com sucesso."
+  Erro_Ao_Ativar_Conta: "&4[LojaSquare] &cCodigo de ativacao invalido ou sistema indisponivel para ativacao."
