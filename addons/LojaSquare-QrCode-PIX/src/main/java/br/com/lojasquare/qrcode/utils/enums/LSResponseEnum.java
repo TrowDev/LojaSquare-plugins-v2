@@ -6,6 +6,7 @@ import lombok.Getter;
 import java.util.Arrays;
 import java.util.Optional;
 
+@Getter
 @AllArgsConstructor
 public enum LSResponseEnum {
 
@@ -23,10 +24,8 @@ public enum LSResponseEnum {
 
     IP_NAO_LIBERADO(409, "[LojaSquare-v2] §cO IP enviado e diferente do que temos em nosso Banco de Dados. IP da sua Maquina: §a@ipServidor");
 
-    @Getter
     private int code;
 
-    @Getter
     private String message;
 
     public static LSResponseEnum findByCode(int code) {

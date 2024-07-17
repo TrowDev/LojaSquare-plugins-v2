@@ -6,7 +6,6 @@ import br.com.lojasquare.qrcode.providers.request.IRequestProvider;
 import br.com.lojasquare.qrcode.providers.request.impl.RequestProviderImpl;
 import br.com.lojasquare.qrcode.utils.enums.LSGateway;
 import br.com.lojasquare.qrcode.utils.model.*;
-import br.com.lojasquare.utils.model.*;
 import com.google.gson.Gson;
 import lombok.Getter;
 
@@ -29,8 +28,8 @@ public class TestCall {
 		su.setDebug(true);
 		requestProvider = new RequestProviderImpl(su);
 		lsProvider = new LSProviderImpl(requestProvider, null, new Gson());
-		buscaProdutosLoja();
-//		geraQrCodeCheckout();
+//		buscaProdutosLoja();
+		geraQrCodeCheckout();
 	}// */
 
 

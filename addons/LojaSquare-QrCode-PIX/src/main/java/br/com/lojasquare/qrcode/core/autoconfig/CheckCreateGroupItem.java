@@ -3,7 +3,7 @@ package br.com.lojasquare.qrcode.core.autoconfig;
 import br.com.lojasquare.qrcode.LojaSquare;
 import br.com.lojasquare.qrcode.core.CheckService;
 import br.com.lojasquare.qrcode.providers.lojasquare.ILSProvider;
-import br.com.lojasquare.qrcode.utils.ConfigManager;
+import br.com.lojasquare.qrcode.utils.bukkit.ConfigManager;
 import br.com.lojasquare.qrcode.utils.StringUtils;
 import br.com.lojasquare.qrcode.utils.model.ProdutoInfo;
 import lombok.AllArgsConstructor;
@@ -13,11 +13,12 @@ import org.bukkit.command.ConsoleCommandSender;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 @AllArgsConstructor
 public class CheckCreateGroupItem implements CheckService {
 	
-	@Getter private LojaSquare pl;
-	@Getter private ILSProvider lsProvider;
+	private LojaSquare pl;
+	private ILSProvider lsProvider;
 	
 	public void execute(ConsoleCommandSender b) {
 		b.sendMessage("§3[LSQrCode] §bIniciando checagem automatica de grupos e produtos...");
@@ -42,15 +43,21 @@ public class CheckCreateGroupItem implements CheckService {
 			List<String> cmdsExecutar = new ArrayList<String>();
 			cmdsExecutar.add("gerarvip "+s+" @dias @qnt @player");
 			List<String> lore = new ArrayList<String>();
-			lore.add("&eGrupo: &a@produto&e");
+			lore.add("&eProduto: &a"+produto.getProduto()+"&e");
+			lore.add("&eGrupo: &a"+produto.getGrupo()+"&e");
 			lore.add("&eDias: &a30 dias");
-			lore.add("&eValor: &aR$ "+ valorFormatado);
+			lore.add("&eValor: &aR$ @valor");
+			lore.add("&eQuantidade: &a@qtd");
 			cm.set("Grupos."+s+".Ativado", false);
 			cm.set("Grupos."+s+".Nome", produto.getProduto());
 			cm.set("Grupos."+s+".ProdutoID", produto.getProdutoID());
 			cm.set("Grupos."+s+".Valor", valorFormatado);
-			cm.set("Grupos."+s+".ID", "41:0");
-			cm.set("Grupos."+s+".Lore", lore);
+			cm.set("Grupos."+s+".Valor_Sem_Formatacao", produto.getValor());
+			cm.set("Grupos."+s+".Linha", 1);
+			cm.set("Grupos."+s+".Slot", 1);
+			cm.set("Grupos."+s+".Item.ID", "41:0");
+			cm.set("Grupos."+s+".Item.Nome", produto.getProduto());
+			cm.set("Grupos."+s+".Item.Lore", lore);
 			pl.getProdutosConfigurados().add(s);
 			b.sendMessage("§3[LSQrCode] §bNovo grupo de produto identificado e pre-configurado: §a"+s);
 		}

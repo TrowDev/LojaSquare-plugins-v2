@@ -1,4 +1,4 @@
-package br.com.lojasquare.qrcode.utils;
+package br.com.lojasquare.qrcode.utils.bukkit;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +15,7 @@ public class ConfigManager extends YamlConfiguration {
 
 	public ConfigManager(String name, Plugin plugin) {
 		if (plugin == null) {
-			Bukkit.broadcastMessage("§4[TGEventos2] §cConfigManager > Plugin null");
+			Bukkit.broadcastMessage("§4[LSQrCode] §cConfigManager > Plugin null");
 			return;
 		}
 		this.plugin = plugin;

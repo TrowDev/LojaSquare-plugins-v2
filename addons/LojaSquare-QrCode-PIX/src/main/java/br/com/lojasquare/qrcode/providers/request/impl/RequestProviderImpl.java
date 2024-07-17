@@ -28,10 +28,10 @@ public class RequestProviderImpl implements IRequestProvider {
 
     @Override
     public HttpResponse get(String endpoint) throws IOException {
-        var msCalc  = new DateDuration();
-        var parser  = new JsonParser();
-        var urlObj  = new URL(siteUtil.getServerRequest()+endpoint);
-        var ms      = 0L;
+        DateDuration msCalc  = new DateDuration();
+        JsonParser parser  = new JsonParser();
+        URL urlObj  = new URL(siteUtil.getServerRequest()+endpoint);
+        Long ms      = 0L;
 
         HttpsURLConnection c = buildDefaultConnection((HttpsURLConnection) urlObj.openConnection(), "GET", null, false);
 
@@ -69,10 +69,10 @@ public class RequestProviderImpl implements IRequestProvider {
 
     @Override
     public HttpResponse post(String endpoint, String body) throws IOException {
-        var msCalc  = new DateDuration();
-        var parser  = new JsonParser();
-        var urlObj  = new URL(siteUtil.getServerRequest()+endpoint);
-        var ms      = 0L;
+        DateDuration msCalc  = new DateDuration();
+        JsonParser parser  = new JsonParser();
+        URL urlObj  = new URL(siteUtil.getServerRequest()+endpoint);
+        Long ms      = 0L;
 
         HttpsURLConnection c = buildDefaultConnection((HttpsURLConnection) urlObj.openConnection(), "POST", body, true);
 
@@ -112,7 +112,8 @@ public class RequestProviderImpl implements IRequestProvider {
         try {
             c.setRequestMethod(method);
             if(getSiteUtil().getCredencial() != null) {
-                c.setRequestProperty("Authorization", chavePublica ? getSiteUtil().getChavePublica() : getSiteUtil().getCredencial());
+                String auth = chavePublica ? getSiteUtil().getChavePublica() : getSiteUtil().getCredencial();
+                c.setRequestProperty("Authorization", auth);
             }
 
             c.setRequestProperty("Accept", "application/json");

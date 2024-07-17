@@ -25,20 +25,10 @@ LojaSquare:
   # Exemplo da impressão: https://prnt.sc/smvuew
   # Caso queira que isso não apareça, marque Debug como false.
   Debug: true
-  # A opcao Smart_Delivery funciona da seguinte forma:
-  # Se o Smart_Delivery estiver marcado como true, e um player comprar 10 Vips no site. Ao inves de o plugin executar 10x o 
-  # comando que voce colocou, sera executado apenas 1x com a quantidade 10 embutida no placeholder @qnt
-  # (@qnt fica la nos comandos dos grupos, ali em baixo).
-  # Ou seja, o plugin sera inteligente e executara menos comandos, realizando a entrega e trazendo um melhor desempenho.
-  # Se o Smart_Delivery estiver marcado como false, o plugin ira executar 10x o comando que voce colocou 
-  # (ou a quantidade de vezes que o player comprou). Entao se voce tiver pacote de cash e o player comprar 500 pacotes de cash, o
-  # plugin ira executar 500x os comandos de entrega do cash.
-  # Ai vai depender de como voce prefere a entrega. Recomendamos deixar true.
-  Smart_Delivery: true
   #
   # Pegue sua KEY API aqui: https://painel.lojasquare.net/pages/conta/dados (ABA: SEGURANÇA)
   # KEY-API Aqui
-  KEY_KEY: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  KEY_API: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
   # Pegue sua SECRET API aqui: https://painel.lojasquare.net/pages/conta/dados (ABA: SEGURANÇA)
   # SECRET_KEY Aqui
   SECRET_KEY: "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
@@ -50,12 +40,96 @@ LojaSquare:
   Read_Timeout: 10000
 
 Config:
+  # Permissao para usar este comando: lojasquare.qrcode.usar
+  Cmd_Abrir_Menu_GUI: "/pix"
+  # Ao fechar o inventario, percorrer item por item e checar se este item é do menu GUI
+  # Se for do menu GUI, remover o item do inventario.
+  # Evita de o player sair com algum item do inventario (menu).
+  Fechar_Inv_Checar_Se_Tem_Item_Indevido: true
+  Anuncio:
+    Ativar: true
+    # Tempo em segundos
+    Tempo_Repetir_Anuncio: 60
+    Mensagem:
+      - '&b '
+      - '&bQuer comprar sem sair do jogo?'
+      - '&bDigite agora: &a/pix'
+      - '&bEscolha o que quer receber &eIN-GAME.'
+      - '&bEscolha a &aquantidade.'
+      - '&bGere o &3QrCode'
+      - '&bPague o &3QrCode'
+      - '&bE &d&lRECEBA!'
+      - '&bRapido, pratico e objetivo!'
+      - '&b'
   HTTPS: true
 
+GUI:
+  Principal:
+    # Em slots, o "bau" tem no minimo 9 slots.
+    # Se quiser 3 linhas com 9 slots cada, coloque 27.
+    # Sempre valores multiplos de 9.
+    Tamanho: 9
+    Nome: "&6PIX &bIn-Game"
+    Completar_GUI: true
+    Item_ID_Completar_GUI: "20:0"
+  Confirmar:
+    # Em slots, o "bau" tem no minimo 9 slots.
+    # Se quiser 3 linhas com 9 slots cada, coloque 27.
+    # Sempre valores multiplos de 9.
+    Tamanho: 18
+    Nome: "&6Confirmar Pedido"
+    Completar_GUI: true
+    Item_ID_Completar_GUI: "20:0"
+    Item_Escolhido_Compra:
+      Linha: 1
+      Slot: 5
+    Item_Confirmar_GerarQrcode:
+      Linha: 2
+      Slot: 9
+      ID: "41:0"
+      Nome: "&6CONFIRMAR"
+      Lore:
+        - '&eClique aqui para gerar o QrCode.'
+    Item_Voltar_Menu_Principal:
+      Linha: 2
+      Slot: 1
+      ID: "4:0"
+      Nome: "&cCANCELAR"
+      Lore:
+        - '&cClique aqui para voltar ao menu anterior.'
+    Item_Aumentar_Quantidade:
+      Linha: 1
+      Slot: 6
+      ID: "262:0"
+      Nome: "&eAumentar"
+      Lore:
+        - '&eClique aqui para aumentar a quantidade.'
+        - '&eAdicao: &a+1 &eunidade'
+    Item_Diminuir_Quantidade:
+      Linha: 1
+      Slot: 4
+      ID: "262:0"
+      Nome: "&cDiminuir"
+      Lore:
+        - '&cClique aqui para diminuir a quantidade.'
+        - '&cReducao: &a-1 &cunidade'
+
+Mapa:
+  Msg_Ao_Gerar: "&3[LsQrCode] &bQrCode gerado com sucesso!"
+  Item:
+    Nome: "&6Doacao"
+    Lore:
+      - '&ePara completar a doacao'
+      - '&e1) Pegue seu celular'
+      - '&e2) Abra o App do banco'
+      - '&e3) Va na area do PIX'
+      - '&e4) Escaneie o QrCode'
+      - '&e5) Realize o pagamento'
+      - '&e6) Voce recebera os brindes in-game &aAUTOMATICAMENTE&e!!'
+
 Msg:
-  # Essa mensagem será exibida ao player quando ele tiver um produto não configurado para ser entregue.
-  Produto_Nao_Configurado: "&4[LojaSquare] &cVocê tem um produto para ser entregue, porém o grupo do produto nao está configurado. Grupo: &a@grupo"
-  Limpe_Seu_Inventario: "&4[LojaSquare] &cLimpe seu inventario para receber o produto do grupo &a@grupo"
-  Use_Cmd_LSite: "&4[LojaSquare] &cUse: &a/lsite <ativar> &a<codigo>"
-  Conta_Ativada: "&3[LojaSquare] &bConta ativada com sucesso."
-  Erro_Ao_Ativar_Conta: "&4[LojaSquare] &cCodigo de ativacao invalido ou sistema indisponivel para ativacao."
+  Sem_Permissao: "&cVoce nao tem permissao para executar este comando."
+  Remova_O_Item_Da_Mao: "&cVoce nao deve ter nenhum item na mao para executar este comando."
+  Falha_Gerar_Qrcode: "&cHouve uma falha ao gerar o QrCode. Erro: &a@erro"
+  Nao_Foi_Possivel_Identificar_Produto_Selecionado: "&cOps... Nao identificamos o produto selecionado. Voce pode tentar novamente agora."
+  Aguarde_Gerando_QrCode: "&eAguarde... Estamos gerando seu QrCode."

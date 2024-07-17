@@ -2,55 +2,85 @@ package br.com.lojasquare.qrcode;
 
 import br.com.lojasquare.qrcode.core.CheckService;
 import br.com.lojasquare.qrcode.core.autoconfig.CheckCreateGroupItem;
-import br.com.lojasquare.qrcode.listener.ProdutoListener;
+import br.com.lojasquare.qrcode.core.gui.OpenGuiConfirmar;
+import br.com.lojasquare.qrcode.core.gui.OpenGuiPrincipal;
+import br.com.lojasquare.qrcode.core.message.MessageSchedulerService;
+import br.com.lojasquare.qrcode.core.produtos.MapProductOfferInGame;
+import br.com.lojasquare.qrcode.listener.CommandListener;
+import br.com.lojasquare.qrcode.listener.FecharInventarioListener;
+import br.com.lojasquare.qrcode.listener.MenuConfirmarListener;
+import br.com.lojasquare.qrcode.listener.MenuPrincipalListener;
 import br.com.lojasquare.qrcode.providers.lojasquare.ILSProvider;
 import br.com.lojasquare.qrcode.providers.request.IRequestProvider;
-import br.com.lojasquare.qrcode.utils.ConfigManager;
 import br.com.lojasquare.qrcode.utils.PluginLoadUtil;
 import br.com.lojasquare.qrcode.utils.SiteUtil;
+import br.com.lojasquare.qrcode.utils.bukkit.ConfigManager;
+import br.com.lojasquare.qrcode.utils.bukkit.Item;
+import br.com.lojasquare.qrcode.utils.bukkit.idlibrary.IDList;
+import br.com.lojasquare.qrcode.utils.bukkit.idlibrary.IDMain;
+import br.com.lojasquare.qrcode.utils.model.ProdutoInfoGUI;
+import br.com.lojasquare.qrcode.utils.versions.ItemValidation;
+import br.com.lojasquare.qrcode.utils.versions.impl.ItemValidationBukkit_v_1_7;
+import br.com.lojasquare.qrcode.utils.versions.impl.ItemValidationBukkit_v_1_8;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
-public class LojaSquare extends JavaPlugin{
+@Setter
+@Getter
+public class LojaSquare extends JavaPlugin {
 	
 	private static LojaSquare pl;
-	private static int tempoChecarItens;
-	private static List<String> produtosAtivados = new ArrayList<>();
-	private static List<String> produtosConfigurados = new ArrayList<>();
 	private static SiteUtil ls;
 	private static String servidor;
-	private static boolean debug,smartDelivery;
-	private static ConfigManager confGrupos;
+	private static boolean debug;
+	@Getter
+    private static ConfigManager confGrupos;
 	//
-	@Getter @Setter private ILSProvider lsProvider;
-	@Getter @Setter private IRequestProvider requestProvider;
+	private ItemValidation itemValidation;
+	private boolean bukkitVersionAcima18;
+	private List<ProdutoInfoGUI> listaProdutos;
+	private List<String> produtosConfigurados;
+	private List<String> mensagensAnuncio;
+	private IDMain idMain;
+	private ILSProvider lsProvider;
+	private IRequestProvider requestProvider;
+	private OpenGuiPrincipal openGuiPrincipal;
+	private OpenGuiConfirmar openGuiConfirmar;
 	
 	public void onEnable() {
 		ConsoleCommandSender b = Bukkit.getConsoleSender();
 		try{
 			PluginLoadUtil plu = new PluginLoadUtil();
 			defineVariaveisAmbiente();
+			if(!Item.defineVersion()) {
+				return;
+			}
 			String keyapi 	= getKeyAPI();
 			b.sendMessage("§6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
 			if(!checarServidorConfigurado(b)) return;
+			validaVersaoBukkit(getServer().getPluginManager(), b);
 			
 			b.sendMessage("§3[LSQrCode] §bAtivado...");
 			b.sendMessage("§3Criador: §bTrow");
-			b.sendMessage("§bDesejo a voce uma otima experiencia com o §dLSQrCode§b.");
+			b.sendMessage("§bDesejo a voce uma otima experiencia com a §dLojaSquare§b.");
+
 			// Carregando todos os grupos de produtos configurados
 			carregaGruposEntregaConfigurados(b);
 			
 			// INICIO definindo variaveis do LojaSquare
 			plu.prepareWebServiceConnection(b, keyapi, getPublicAPI(), lsProvider, requestProvider, ls, pl);
+			idMain = new IDMain(new IDList());
 			// FIM definindo variaveis do LojaSquare
 
 			registraEventosCmds();
@@ -67,40 +97,67 @@ public class LojaSquare extends JavaPlugin{
 	}
 
 	private void registraEventosCmds() {
-		Bukkit.getPluginManager().registerEvents(new ProdutoListener(pl,lsProvider), this);
+		PluginManager pm = Bukkit.getPluginManager();
+		pm.registerEvents(new MenuPrincipalListener(pl), this);
+		pm.registerEvents(new MenuConfirmarListener(pl), this);
+		pm.registerEvents(new CommandListener(pl), this);
+		if(getConfig().getBoolean("Config.Fechar_Inv_Checar_Se_Tem_Item_Indevido")) {
+			pm.registerEvents(new FecharInventarioListener(pl), this);
+		}
+	}
+
+	private void validaVersaoBukkit(PluginManager pm, ConsoleCommandSender b) {
+		if(Item.isAboveBukkit18()) {
+			setItemValidation(new ItemValidationBukkit_v_1_8(this));
+			setBukkitVersionAcima18(true);
+			if (pm.getPlugin("NBTAPI") == null && pm.getPlugin("AtlasLicense") == null) {
+				b.sendMessage("§6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+				b.sendMessage("§3[LSQrCode] §bDesativado...");
+				b.sendMessage("§3Criador: §bTrow");
+				b.sendMessage("§bAgradeco por usar meu(s) plugin(s)");
+				b.sendMessage("§4Motivo: §cNBTAPI nao encontrado! Baixe em: https://www.spigotmc.org/resources/nbt-api.7939/");
+				b.sendMessage("§6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+				pm.disablePlugin(this);
+				return;
+			}
+		} else {
+			setItemValidation(new ItemValidationBukkit_v_1_7(this));
+		}
 	}
 
 	private void checagensDeInicializacao(ConsoleCommandSender b) {
 		List<CheckService> checkServices = new ArrayList<>();
 		checkServices.add(new CheckCreateGroupItem(pl, lsProvider));
+		checkServices.add(new MapProductOfferInGame(pl));
+		checkServices.add(new MessageSchedulerService(pl));
 
 		checkServices.forEach(s -> s.execute(b));
 	}
 
 	private void carregaGruposEntregaConfigurados(ConsoleCommandSender b) {
-		confGrupos 	= new ConfigManager("produtos", pl);
+		confGrupos = new ConfigManager("produtos", pl);
 		if(confGrupos == null || confGrupos.getString("Grupos") == null) return;
 		b.sendMessage("§3[LSQrCode] §bIniciando o carregamento dos nomes dos grupos de itens para serem entregues...");
 		for(String v : confGrupos.getConfigurationSection("Grupos").getKeys(false)){
 			produtosConfigurados.add(v);
-			if(!confGrupos.getBoolean("Grupos."+v+".Ativado")) {
-				b.sendMessage("§4[LSQrCode] §cO grupo §a"+v+"§c nao esta ativado nas configuracoes.");
-				continue;
-			}
-			produtosAtivados.add(v);
 			b.sendMessage("§3[LSQrCode] §bGrupo carregado: §a"+v);
 		}
 		b.sendMessage("§3[LSQrCode] §bGrupos de entregas foram carregados com sucesso!");
 	}
 
 	private void defineVariaveisAmbiente() {
+		setListaProdutos(new ArrayList<>());
+		setProdutosConfigurados(new ArrayList<>());
+		setMensagensAnuncio(new ArrayList<>());
 		pl=this;
 		saveDefaultConfig();
 		debug 				= getConfig().getBoolean("LojaSquare.Debug",true);
 		servidor 			= getConfig().getString("LojaSquare.Servidor",null);
-		smartDelivery 		= getConfig().getBoolean("LojaSquare.Smart_Delivery",true);
-		// Definindo outras variaveis para nao ir buscar na Config.yml toda vez que for necessario.
-		tempoChecarItens 	= getConfig().getInt("Config.Tempo_Checar_Compras",60);
+		setOpenGuiPrincipal(new OpenGuiPrincipal(this));
+		setOpenGuiConfirmar(new OpenGuiConfirmar(this, new HashMap<>()));
+		for(String s : pl.getConfig().getStringList("Config.Anuncio.Mensagem")) {
+			getMensagensAnuncio().add(s.replace("&", "§"));
+		}
 	}
 
 	public void onDisable() {
@@ -155,15 +212,6 @@ public class LojaSquare extends JavaPlugin{
 		return null;
 	}
 	
-	public int getTempoChecarItens(){
-		if(tempoChecarItens<20) return 20;
-		return tempoChecarItens;
-	}
-	
-	public boolean doSmartDelivery(){
-		return smartDelivery;
-	}
-	
 	public void setSiteUtil(SiteUtil su) {
 		ls = su;
 	}
@@ -173,31 +221,11 @@ public class LojaSquare extends JavaPlugin{
 	}
 
 	public String getKeyAPI(){
-		return getMsg("LojaSquare.SECRET_API");
+		return getMsg("LojaSquare.SECRET_KEY");
 	}
 
 	public String getPublicAPI(){
-		return getMsg("LojaSquare.KEY_KEY");
-	}
-	
-	public boolean produtoAtivado(String grupo){
-		return produtosAtivados.contains(grupo);
-	}
-	
-	public static List<String> getProdutosAtivados() {
-		return produtosAtivados;
-	}
-
-	public static void setProdutosAtivados(List<String> produtosConfigurados) {
-		produtosAtivados = produtosConfigurados;
-	}
-
-	public static List<String> getProdutosConfigurados() {
-		return produtosConfigurados;
-	}
-
-	public static void setProdutosConfigurados(List<String> produtosConfigurados) {
-		pl.produtosConfigurados = produtosConfigurados;
+		return getMsg("LojaSquare.KEY_API");
 	}
 
 	public String getMsg(String s){
@@ -225,11 +253,7 @@ public class LojaSquare extends JavaPlugin{
 		this.servidor = servidor;
 	}
 
-	public static ConfigManager getConfGrupos() {
-		return confGrupos;
-	}
-
-	public static void setConfGrupos(ConfigManager confGrupos) {
+    public static void setConfGrupos(ConfigManager confGrupos) {
 		confGrupos = confGrupos;
 	}
 	
