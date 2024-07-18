@@ -56,7 +56,7 @@ public class OpenGuiConfirmar {
             is.setItemMeta(im);
 
             if(pl.isBukkitVersionAcima18()) {
-                NBTItem nb = NbtItem.getNbtItem(is);
+                NBTItem nb = NbtItem.getNbtItem(is, true);
                 nb.setBoolean(Constants.KEY_ITEM_NBTAPI_QRCODE_AUTO_COMPLETE_GUI, true);
                 is = nb.getItem();
             }
@@ -71,7 +71,7 @@ public class OpenGuiConfirmar {
         ItemStack item = getItemStack(prefix);
 
         if (pl.isBukkitVersionAcima18()) {
-            NBTItem nb = NbtItem.getNbtItem(item);
+            NBTItem nb = NbtItem.getNbtItem(item, true);
             nb.setBoolean(Constants.KEY_ITEM_NBTAPI_QRCODE_ALTERA_QTD, true);
             nb.setBoolean(Constants.KEY_ITEM_NBTAPI_QRCODE_ADD_QTD, tipoItem.equals("Aumentar_Quantidade"));
             item = nb.getItem();
@@ -88,7 +88,7 @@ public class OpenGuiConfirmar {
         int linha = pl.getConfig().getInt(prefix+".Linha");
 
         if (pl.isBukkitVersionAcima18()) {
-            NBTItem nb = NbtItem.getNbtItem(item);
+            NBTItem nb = NbtItem.getNbtItem(item, true);
             nb.setBoolean(Constants.KEY_ITEM_NBTAPI_QRCODE_CONFIRMA_QRCODE, tipoItem.equals("Confirmar_GerarQrcode"));
             nb.setBoolean(Constants.KEY_ITEM_NBTAPI_QRCODE_VOLTAR_MENU_ANTERIOR, tipoItem.equals("Voltar_Menu_Principal"));
             item = nb.getItem();
@@ -114,7 +114,7 @@ public class OpenGuiConfirmar {
         item.setItemMeta(itemMeta);
 
         if (pl.isBukkitVersionAcima18()) {
-            NBTItem nb = NbtItem.getNbtItem(item);
+            NBTItem nb = NbtItem.getNbtItem(item, true);
             item = nb.getItem();
         }
 

@@ -79,7 +79,7 @@ public class GerarQrcodeStrategyImpl implements AcaoStrategy {
     private CheckoutResponse geraCodigoPagamento(Player p, ProdutoInfoGUI produto) {
         CheckoutResponse checkoutResponse = pl.getLsProvider().getQrCodePayment(Checkout.builder()
                 .carrinho(Collections.singletonList(ItemInfo.builder()
-                        .produtoId(produto.getProdutoId()).quantidade(2)
+                        .produtoId(produto.getProdutoId()).quantidade(produto.getQuantidade())
                         .build()))
                 .cliente(Cliente.builder().clienteID(0L).build())
                 .gateway(LSGateway.PAGSQUARE.getGateway())

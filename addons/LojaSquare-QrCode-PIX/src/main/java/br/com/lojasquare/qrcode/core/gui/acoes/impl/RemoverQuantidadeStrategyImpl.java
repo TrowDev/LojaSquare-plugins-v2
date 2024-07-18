@@ -66,7 +66,7 @@ public class RemoverQuantidadeStrategyImpl implements AcaoStrategy {
         item.setItemMeta(itemMeta);
 
         if(pl.isBukkitVersionAcima18()) {
-            NBTItem nb = NbtItem.getNbtItem(item);
+            NBTItem nb = NbtItem.getNbtItem(item, true);
             nb.setLong(Constants.KEY_ITEM_NBTAPI_QRCODE_PRODUTOID, produto.getProdutoId());
             item = nb.getItem();
         }

@@ -52,7 +52,7 @@ public class OpenGuiPrincipal {
             is.setItemMeta(im);
 
             if(pl.isBukkitVersionAcima18()) {
-                NBTItem nb = NbtItem.getNbtItem(is);
+                NBTItem nb = NbtItem.getNbtItem(is, true);
                 nb.setBoolean(Constants.KEY_ITEM_NBTAPI_QRCODE_AUTO_COMPLETE_GUI, true);
                 is = nb.getItem();
             }
@@ -74,7 +74,7 @@ public class OpenGuiPrincipal {
         item.setItemMeta(itemMeta);
 
         if(pl.isBukkitVersionAcima18()) {
-            NBTItem nb = NbtItem.getNbtItem(item);
+            NBTItem nb = NbtItem.getNbtItem(item, true);
             nb.setLong(Constants.KEY_ITEM_NBTAPI_QRCODE_PRODUTOID, produto.getProdutoId());
             item = nb.getItem();
         }

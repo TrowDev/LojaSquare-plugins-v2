@@ -8,10 +8,12 @@ import org.bukkit.inventory.ItemStack;
 
 @UtilityClass
 public class NbtItem {
-    public NBTItem getNbtItem(ItemStack is) {
+    public NBTItem getNbtItem(ItemStack is, boolean setarFlagItemQrCode) {
         try {
             NBTItem nb = new NBTItem(is);
-            nb.setBoolean(Constants.KEY_ITEM_NBTAPI_QRCODE, true);
+            if(setarFlagItemQrCode) {
+                nb.setBoolean(Constants.KEY_ITEM_NBTAPI_QRCODE, true);
+            }
             return nb;
         } catch (Exception e) {
             e.printStackTrace();

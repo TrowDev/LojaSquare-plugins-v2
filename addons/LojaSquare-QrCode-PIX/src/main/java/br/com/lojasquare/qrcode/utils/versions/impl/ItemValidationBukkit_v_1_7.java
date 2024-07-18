@@ -31,7 +31,8 @@ public class ItemValidationBukkit_v_1_7 implements ItemValidation {
     private boolean isItemGuiConfirmacao(ItemStack is, String nomeGui, String nomeItem) {
         if(!nomeGui.equalsIgnoreCase(StringUtils.removerCaracterCor(pl.getMsg("GUI.Confirmar.Nome")))) return false;
         
-        return  validaItemGuiConfirmacao(is, "Confirmar_GerarQrcode") ||
+        return  Objects.nonNull(getProdutoInfoGUI(is, nomeItem)) ||
+                validaItemGuiConfirmacao(is, "Confirmar_GerarQrcode") ||
                 validaItemGuiConfirmacao(is, "Voltar_Menu_Principal") ||
                 validaItemGuiConfirmacao(is, "Aumentar_Quantidade") ||
                 validaItemGuiConfirmacao(is, "Diminuir_Quantidade");
@@ -47,7 +48,8 @@ public class ItemValidationBukkit_v_1_7 implements ItemValidation {
     }
 
     private boolean isItemGuiPrincipal(ItemStack is, String nomeGui, String nomeItem) {
-        return Objects.nonNull(getProdutoInfoGUI(is, nomeGui, nomeItem));
+        if(!nomeGui.equalsIgnoreCase(StringUtils.removerCaracterCor(pl.getMsg("GUI.Principal.Nome")))) return false;
+        return Objects.nonNull(getProdutoInfoGUI(is, nomeItem));
     }
 
     @Override
@@ -64,11 +66,11 @@ public class ItemValidationBukkit_v_1_7 implements ItemValidation {
         if(nomeItem.equals("§8AC")) return null;
         String nomeGui = StringUtils.removerCaracterCor(inv.getTitle());
         if(StringUtils.isEmpty(nomeGui)) return null;
-        return getProdutoInfoGUI(is, nomeGui, nomeItem);
+        if(!nomeGui.equalsIgnoreCase(StringUtils.removerCaracterCor(pl.getMsg("GUI.Principal.Nome")))) return null;
+        return getProdutoInfoGUI(is, nomeItem);
     }
 
-    private ProdutoInfoGUI getProdutoInfoGUI(ItemStack is, String nomeGui, String nomeItem) {
-        if(!nomeGui.equalsIgnoreCase(StringUtils.removerCaracterCor(pl.getMsg("GUI.Principal.Nome")))) return null;
+    private ProdutoInfoGUI getProdutoInfoGUI(ItemStack is, String nomeItem) {
         String idDataItem = is.getType().getId()+":"+ is.getType().getMaxDurability();
         for(ProdutoInfoGUI produto : pl.getListaProdutos()) {
             String nomeProduto = StringUtils.removerCaracterCor(produto.getItemNome());

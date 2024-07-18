@@ -22,7 +22,7 @@ public class ItemValidationBukkit_v_1_8 implements ItemValidation {
     @Override
     public boolean validaItemGuiConfirmacao(ItemStack is, String nomeItemConfig) {
         if(!isItemGui(null, is)) return false;
-        NBTItem nb = NbtItem.getNbtItem(is);
+        NBTItem nb = NbtItem.getNbtItem(is, false);
         if(nomeItemConfig.equals("Voltar_Menu_Principal") && nb.hasKey(Constants.KEY_ITEM_NBTAPI_QRCODE_VOLTAR_MENU_ANTERIOR)) {
             return nb.getBoolean(Constants.KEY_ITEM_NBTAPI_QRCODE_VOLTAR_MENU_ANTERIOR);
         } else if(nomeItemConfig.equals("Confirmar_GerarQrcode") && nb.hasKey(Constants.KEY_ITEM_NBTAPI_QRCODE_CONFIRMA_QRCODE)) {
@@ -37,7 +37,7 @@ public class ItemValidationBukkit_v_1_8 implements ItemValidation {
     @Override
     public boolean isItemGui(Inventory inv, ItemStack is) {
         if(Objects.nonNull(is)) {
-            NBTItem nb = NbtItem.getNbtItem(is);
+            NBTItem nb = NbtItem.getNbtItem(is, false);
             return nb.hasKey(Constants.KEY_ITEM_NBTAPI_QRCODE);
         }
         return false;
@@ -46,14 +46,14 @@ public class ItemValidationBukkit_v_1_8 implements ItemValidation {
     @Override
     public boolean isItemCompletGUI(ItemStack is) {
         if(!isItemGui(null, is)) return false;
-        NBTItem nb = NbtItem.getNbtItem(is);
+        NBTItem nb = NbtItem.getNbtItem(is, false);
         return nb.hasKey(Constants.KEY_ITEM_NBTAPI_QRCODE_AUTO_COMPLETE_GUI);
     }
 
     @Override
     public ProdutoInfoGUI getProdutoInfo(Inventory inv, ItemStack is) {
         if(!isItemGui(null, is)) return null;
-        NBTItem nb = NbtItem.getNbtItem(is);
+        NBTItem nb = NbtItem.getNbtItem(is, false);
         if(!nb.hasKey(Constants.KEY_ITEM_NBTAPI_QRCODE_PRODUTOID)) return null;
         Long prdID = nb.getLong(Constants.KEY_ITEM_NBTAPI_QRCODE_PRODUTOID);
 
