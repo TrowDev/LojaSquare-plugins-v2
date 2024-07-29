@@ -11,6 +11,7 @@ import lombok.Getter;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class TestCall {
 
@@ -43,7 +44,7 @@ public class TestCall {
 	private static void geraQrCodeCheckout() {
 		CheckoutResponse checkoutResponse = lsProvider.getQrCodePayment(Checkout.builder()
 						.carrinho(Collections.singletonList(ItemInfo.builder()
-										.produtoId(178L).quantidade(2)
+										.produtoId(9812L).quantidade(1)
 								.build()))
 						.cliente(Cliente.builder().clienteID(0L).build())
 						.gateway(LSGateway.PAGSQUARE.getGateway())
@@ -51,7 +52,8 @@ public class TestCall {
 						.servidor("TrowCraft2")
 				.build());
 		print(checkoutResponse.isImg() ? "QR_CODE" : "LINK_PGMTO");
-		print(checkoutResponse.isError() ? "FALHA" : "SUCESSO");
+		print(checkoutResponse.isError() || Objects.nonNull(checkoutResponse.getInfo()) ? "FALHA" : "SUCESSO");
+		print(checkoutResponse.getInfo());
 		print(checkoutResponse.getMessage());
 		print(checkoutResponse.getCode());
 		print(checkoutResponse.getUrlPayment());

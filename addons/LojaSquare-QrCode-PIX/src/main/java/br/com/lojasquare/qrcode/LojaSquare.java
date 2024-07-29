@@ -2,6 +2,7 @@ package br.com.lojasquare.qrcode;
 
 import br.com.lojasquare.qrcode.core.CheckService;
 import br.com.lojasquare.qrcode.core.autoconfig.CheckCreateGroupItem;
+import br.com.lojasquare.qrcode.core.commands.GerarQrCodeCmd;
 import br.com.lojasquare.qrcode.core.gui.OpenGuiConfirmar;
 import br.com.lojasquare.qrcode.core.gui.OpenGuiPrincipal;
 import br.com.lojasquare.qrcode.core.message.MessageSchedulerService;
@@ -100,7 +101,7 @@ public class LojaSquare extends JavaPlugin {
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new MenuPrincipalListener(pl), this);
 		pm.registerEvents(new MenuConfirmarListener(pl), this);
-		pm.registerEvents(new CommandListener(pl), this);
+		pm.registerEvents(new CommandListener(pl, new GerarQrCodeCmd(pl), new HashMap<>()), this);
 		if(getConfig().getBoolean("Config.Fechar_Inv_Checar_Se_Tem_Item_Indevido")) {
 			pm.registerEvents(new FecharInventarioListener(pl), this);
 		}

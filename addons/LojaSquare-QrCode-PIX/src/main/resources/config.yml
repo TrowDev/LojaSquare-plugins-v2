@@ -132,4 +132,7 @@ Msg:
   Remova_O_Item_Da_Mao: "&cVoce nao deve ter nenhum item na mao para executar este comando."
   Falha_Gerar_Qrcode: "&cHouve uma falha ao gerar o QrCode. Erro: &a@erro"
   Nao_Foi_Possivel_Identificar_Produto_Selecionado: "&cOps... Nao identificamos o produto selecionado. Voce pode tentar novamente agora."
+  Aguarde_Delay: "&cAguarde &a@tempo segundo(s)&c para executar essa acao novamente."
   Aguarde_Gerando_QrCode: "&eAguarde... Estamos gerando seu QrCode."
+  Use_Cmd_Pix: "&eUse: &a/pix &agerar <&7Grupo&a/&7Id Produto&a> <&7Quantidade&a>"
+  Use_Numeros_No_Campo_IdProduto_Quantidade: "&cUse numeros no campo Id Produto e Quantidade. Ex.: &a/pix 1234 1"

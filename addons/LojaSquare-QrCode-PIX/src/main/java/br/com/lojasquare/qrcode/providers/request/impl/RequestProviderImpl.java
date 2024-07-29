@@ -89,7 +89,7 @@ public class RequestProviderImpl implements IRequestProvider {
 
         ms  = msCalc.calculate();
 
-        if (statusCode == 200 || statusCode == 201 || statusCode == 204) {
+        if (statusCode == 200 || statusCode == 201 || statusCode == 204 || statusCode == 404) {
 
             return HttpResponse.builder()
                     .code(statusCode)

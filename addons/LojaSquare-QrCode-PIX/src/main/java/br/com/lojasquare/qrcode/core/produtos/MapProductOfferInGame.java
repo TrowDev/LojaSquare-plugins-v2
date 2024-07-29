@@ -52,6 +52,7 @@ public class MapProductOfferInGame implements CheckService {
 			}
 			ItemStack item = Item.getItemStack(itemId, nomeProduto, lore);
 			pl.getListaProdutos().add(ProdutoInfoGUI.builder()
+							.grupo(grupo)
 							.produto(cm.getString(prefixo+".Nome"))
 							.item(item).produtoId(produtoId).valor(valor)
 							.slot(slot).linha(linha).itemId(itemId).quantidade(1)

@@ -25,4 +25,13 @@ public class StringUtils {
         if(Objects.isNull(value)) return "";
         return value.replaceAll("&([0-9|a-f|r])", "").replaceAll("§([0-9|a-f|r])", "");
     }
+
+    public boolean isNumero(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

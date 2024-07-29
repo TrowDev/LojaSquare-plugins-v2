@@ -11,6 +11,7 @@ public class CheckoutResponse {
     private String urlPayment;
     private String code;
     private String message;
+    private String info;
     private boolean img;
     private boolean error;
 }

@@ -46,15 +46,17 @@ public class GerarQrcodeStrategyImpl implements AcaoStrategy {
                 }
             }.runTaskAsynchronously(pl);
         } catch (Exception e) {
-            p.sendMessage("§4[LSQrCode] §cHouve uma falha ao gerar o mapa com o QrCode.");
+            p.sendMessage("§4[LSQrCode] §cHouve uma falha ao gerar o mapa com o QrCode. Erro: §a"+e.getMessage());
             e.printStackTrace();
         }
     }
 
     private boolean validaCheckoutResponse(Player p, CheckoutResponse checkoutResponse) {
-        if(checkoutResponse.isError()) {
+        if(checkoutResponse.isError() || Objects.nonNull(checkoutResponse.getInfo())) {
             String msg = checkoutResponse.getMessage();
-            if(StringUtils.isEmpty(msg)) {
+            if(Objects.nonNull(checkoutResponse.getInfo())) {
+                msg = checkoutResponse.getInfo();
+            } else if(StringUtils.isEmpty(msg)) {
                 msg = "Falha ao gerar QrCode. Notifique o administrador.";
             }
             p.sendMessage(pl.getMsg("Msg.Falha_Gerar_Qrcode").replace("@erro", msg));

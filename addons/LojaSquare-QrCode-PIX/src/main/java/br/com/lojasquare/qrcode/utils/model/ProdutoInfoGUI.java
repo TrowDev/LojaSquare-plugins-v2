@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 @ToString
 public class ProdutoInfoGUI {
+    private String grupo;
     private String produto;
     private String itemId;
     private String itemNome;
