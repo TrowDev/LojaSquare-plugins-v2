@@ -51,6 +51,10 @@ public class MapProductOfferInGame implements CheckService {
 				lore.add(linhaLore.replace("&", "§"));
 			}
 			ItemStack item = Item.getItemStack(itemId, nomeProduto, lore);
+			if(Objects.isNull(item) || Objects.isNull(item.getItemMeta())) {
+				b.sendMessage("§4[LSQrCode] §cFalha ao carregar o Item/ItemMeta do grupo: §a"+grupo+"§c, itemId: §a"+itemId);
+				return;
+			}
 			pl.getListaProdutos().add(ProdutoInfoGUI.builder()
 							.grupo(grupo)
 							.produto(cm.getString(prefixo+".Nome"))

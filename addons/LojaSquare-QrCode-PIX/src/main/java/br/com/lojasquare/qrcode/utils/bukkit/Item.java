@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -73,7 +74,9 @@ public class Item {
 
     public static ItemStack getItemStack(String mat, String nome, List<String> lore) {
         ItemStack is = getItemStack(mat);
+        if(Objects.isNull(is)) return null;
         ItemMeta im = is.getItemMeta();
+        if(Objects.isNull(im)) return null;
         im.setDisplayName(nome.replace("&", "§"));
         im.setLore(lore);
         is.setItemMeta(im);
