@@ -74,9 +74,8 @@ public class Item {
 
     public static ItemStack getItemStack(String mat, String nome, List<String> lore) {
         ItemStack is = getItemStack(mat);
-        if(Objects.isNull(is)) return null;
+        if(Objects.isNull(is) || Objects.isNull(is.getItemMeta())) return null;
         ItemMeta im = is.getItemMeta();
-        if(Objects.isNull(im)) return null;
         im.setDisplayName(nome.replace("&", "§"));
         im.setLore(lore);
         is.setItemMeta(im);
@@ -114,6 +113,7 @@ public class Item {
      */
     public static ItemStack getItemStack(String mat, int amt, byte data) {
         try {
+            ItemStack is = null;
             if (versionCompare(version, "1.12") < 0) {
                 return createLegacyItemStack(mat, amt, data);
             } else {

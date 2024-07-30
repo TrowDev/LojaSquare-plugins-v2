@@ -52,10 +52,15 @@ public class GerarQrcodeStrategyImpl implements AcaoStrategy {
     }
 
     private boolean validaCheckoutResponse(Player p, CheckoutResponse checkoutResponse) {
-        if(checkoutResponse.isError() || Objects.nonNull(checkoutResponse.getInfo())) {
+        if(checkoutResponse.isError()
+                || Objects.nonNull(checkoutResponse.getInfo())
+                || Objects.nonNull(checkoutResponse.getMsg())
+                || Objects.isNull(checkoutResponse.getUrlPayment())) {
             String msg = checkoutResponse.getMessage();
             if(Objects.nonNull(checkoutResponse.getInfo())) {
                 msg = checkoutResponse.getInfo();
+            } else if(Objects.nonNull(checkoutResponse.getMsg())) {
+                msg = checkoutResponse.getMsg();
             } else if(StringUtils.isEmpty(msg)) {
                 msg = "Falha ao gerar QrCode. Notifique o administrador.";
             }

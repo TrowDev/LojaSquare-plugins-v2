@@ -51,6 +51,7 @@ public class OpenGuiConfirmar {
     private void completarMenuGUISlotsVazios(GUIAPI gui) {
         if(pl.getConfig().getBoolean("GUI.Confirmar.Completar_GUI")) {
             ItemStack is = Item.getItemStack(pl.getMsg("GUI.Confirmar.Item_ID_Completar_GUI"));
+            if(Objects.isNull(is) || Objects.isNull(is.getItemMeta())) return;
             ItemMeta im = is.getItemMeta();
             im.setDisplayName("§8AC");
             is.setItemMeta(im);
@@ -69,6 +70,7 @@ public class OpenGuiConfirmar {
         int slot = pl.getConfig().getInt(prefix+".Slot");
         int linha = pl.getConfig().getInt(prefix+".Linha");
         ItemStack item = getItemStack(prefix);
+        if(Objects.isNull(item) ) return;
 
         if (pl.isBukkitVersionAcima18()) {
             NBTItem nb = NbtItem.getNbtItem(item, true);
@@ -125,6 +127,7 @@ public class OpenGuiConfirmar {
 
     private ItemStack getItemStack(String prefix) {
         ItemStack item = Item.getItemStack(pl.getMsg(prefix +".ID"));
+        if(Objects.isNull(item) || Objects.isNull(item.getItemMeta())) return null;
         ItemMeta itemMeta = item.getItemMeta();
         List<String> lore = new ArrayList<>();
         for(String s : pl.getConfig().getStringList(prefix +".Lore")) {

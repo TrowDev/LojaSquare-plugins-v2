@@ -1,10 +1,10 @@
 package br.com.lojasquare.qrcode.providers.request.impl;
 
 import br.com.lojasquare.qrcode.providers.request.IRequestProvider;
-import br.com.lojasquare.qrcode.utils.enums.LSResponseEnum;
 import br.com.lojasquare.qrcode.utils.DateDuration;
 import br.com.lojasquare.qrcode.utils.HttpResponse;
 import br.com.lojasquare.qrcode.utils.SiteUtil;
+import br.com.lojasquare.qrcode.utils.enums.LSResponseEnum;
 import com.google.gson.JsonParser;
 import lombok.Getter;
 
@@ -89,7 +89,7 @@ public class RequestProviderImpl implements IRequestProvider {
 
         ms  = msCalc.calculate();
 
-        if (statusCode == 200 || statusCode == 201 || statusCode == 204 || statusCode == 404) {
+        if (statusCode == 200 || statusCode == 201 || statusCode == 204 || statusCode == 404 || statusCode == 400) {
 
             return HttpResponse.builder()
                     .code(statusCode)

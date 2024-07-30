@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Objects;
 
 public class QrCodeMap {
 
@@ -83,10 +84,19 @@ public class QrCodeMap {
             for (int i = 0; i < args.length; i++) {
                 parameterTypes[i] = args[i].getClass();
             }
-            Method method = obj.getClass().getMethod(methodName, parameterTypes);
+            Method method = getMethod(obj, methodName, parameterTypes);
+            if(Objects.isNull(method)) return;
             method.invoke(obj, args);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private static Method getMethod(Object obj, String method, Class<?>... parameterTypes) {
+        try {
+            return obj.getClass().getMethod(method, parameterTypes);
+        } catch (Exception e) {
+            return null;
         }
     }
 

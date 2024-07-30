@@ -12,6 +12,7 @@ public class CheckoutResponse {
     private String code;
     private String message;
     private String info;
+    private String msg;
     private boolean img;
     private boolean error;
 }

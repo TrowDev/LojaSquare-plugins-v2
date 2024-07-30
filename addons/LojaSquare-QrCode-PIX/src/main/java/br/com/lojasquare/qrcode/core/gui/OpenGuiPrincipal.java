@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @AllArgsConstructor
 public class OpenGuiPrincipal {
@@ -47,6 +48,7 @@ public class OpenGuiPrincipal {
     private void completarMenuGUISlotsVazios(GUIAPI gui) {
         if(pl.getConfig().getBoolean("GUI.Principal.Completar_GUI")) {
             ItemStack is = Item.getItemStack(pl.getMsg("GUI.Principal.Item_ID_Completar_GUI"));
+            if(Objects.isNull(is) || Objects.isNull(is.getItemMeta())) return;
             ItemMeta im = is.getItemMeta();
             im.setDisplayName("§8AC");
             is.setItemMeta(im);
