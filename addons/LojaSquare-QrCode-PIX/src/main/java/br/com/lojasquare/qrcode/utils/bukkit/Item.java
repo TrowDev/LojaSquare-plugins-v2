@@ -65,16 +65,16 @@ public class Item {
 
     private static void displayError(ConsoleCommandSender console, String message) {
         console.sendMessage("§6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
-        console.sendMessage("§3["+LojaSquare.getInstance().getDescription().getName()+"] §cDesativado...");
+        console.sendMessage("§3[" + LojaSquare.getInstance().getDescription().getName() + "] §cDesativado...");
         console.sendMessage("§3Criador: §3Trow");
-        console.sendMessage("§4Erro: §a"+message);
+        console.sendMessage("§4Erro: §a" + message);
         console.sendMessage("§6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
         Bukkit.getPluginManager().disablePlugin(LojaSquare.getInstance());
     }
 
     public static ItemStack getItemStack(String mat, String nome, List<String> lore) {
         ItemStack is = getItemStack(mat);
-        if(Objects.isNull(is) || Objects.isNull(is.getItemMeta())) return null;
+        if (Objects.isNull(is) || Objects.isNull(is.getItemMeta())) return null;
         ItemMeta im = is.getItemMeta();
         im.setDisplayName(nome.replace("&", "§"));
         im.setLore(lore);
@@ -106,19 +106,21 @@ public class Item {
     /**
      * Gets an ItemStack from a material string with specified amount and data.
      *
-     * @param mat the material string
-     * @param amt the amount of items
+     * @param mat  the material string
+     * @param amt  the amount of items
      * @param data the data value of the item
      * @return the corresponding ItemStack, or null if invalid
      */
     public static ItemStack getItemStack(String mat, int amt, byte data) {
         try {
-            ItemStack is = null;
             if (versionCompare(version, "1.12") < 0) {
                 return createLegacyItemStack(mat, amt, data);
             } else {
-                Material material = getId().getMaterial(mat);
-                return new ItemStack(material, amt, data);
+                Material material = Material.getMaterial(mat.toUpperCase());
+                if (material == null) {
+                    throw new IllegalArgumentException("Invalid material: " + mat);
+                }
+                return new ItemStack(material, amt);
             }
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("§4[" + LojaSquare.getInstance().getDescription().getName() + "] §cMaterial §a" + mat + "§c is not configured correctly.");
@@ -129,9 +131,12 @@ public class Item {
     private static ItemStack createLegacyItemStack(String mat, int amt, byte data) {
         if (mat.contains(":")) {
             String[] parts = mat.split(":");
-            return new ItemStack(Material.getMaterial(Integer.parseInt(parts[0])), amt, Byte.parseByte(parts[1]));
+            int materialId = Integer.parseInt(parts[0]);
+            byte materialData = Byte.parseByte(parts[1]);
+            return new ItemStack(Material.getMaterial(String.valueOf(materialId)), amt, materialData);
         } else {
-            return new ItemStack(Material.getMaterial(Integer.parseInt(mat)), amt, data);
+            int materialId = Integer.parseInt(mat);
+            return new ItemStack(Material.getMaterial(String.valueOf(materialId)), amt, data);
         }
     }
 

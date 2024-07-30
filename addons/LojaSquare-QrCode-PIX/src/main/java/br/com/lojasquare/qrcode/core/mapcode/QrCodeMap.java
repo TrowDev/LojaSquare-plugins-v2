@@ -30,43 +30,44 @@ public class QrCodeMap {
     }
 
     public static void generateMap(final BufferedImage image, Player player, String nomeMapa, List<String> lore) {
-        ItemStack mapItem = createMapItem();
-        MapMeta mapMeta = (MapMeta) mapItem.getItemMeta();
-        MapView mapView = Bukkit.createMap(player.getWorld());
+        try {
+            if (image == null) {
+                Bukkit.getLogger().severe("The QR code image is null.");
+                return;
+            }
 
-        configureMapView(mapView);
+            ItemStack mapItem = createMapItem();
+            MapMeta mapMeta = (MapMeta) mapItem.getItemMeta();
+            MapView mapView = Bukkit.createMap(player.getWorld());
+            mapView.setScale(MapView.Scale.CLOSEST);
 
-        mapView.getRenderers().clear();
-        mapView.addRenderer(new QRCodeMapRenderer(image));
+            if (Item.isAboveBukkit111()) {
+                mapView.setUnlimitedTracking(true);
+            }
 
-        setMapMeta(mapMeta, mapView, mapItem);
-        mapMeta.setDisplayName(nomeMapa);
-        mapMeta.setLore(lore);
-        mapItem.setItemMeta(mapMeta);
+            mapView.getRenderers().clear();
+            mapView.addRenderer(new QRCodeMapRenderer(image));
 
-        player.getInventory().setItemInHand(mapItem);
+            if (Item.isAboveBukkit111()) {
+                mapMeta.setMapView(mapView);
+            } else {
+                short mapID = getMapID(mapView);
+                setMapItemID(mapItem, mapID);
+            }
+
+            mapMeta.setDisplayName(nomeMapa);
+            mapMeta.setLore(lore);
+            mapItem.setItemMeta(mapMeta);
+
+            player.getInventory().setItemInHand(mapItem);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static ItemStack createMapItem() {
-        String mapMaterial = Item.isAboveBukkit111() ? "FILLED_MAP" : "MAP";
-        return new ItemStack(Material.getMaterial(mapMaterial));
-    }
-
-    private static void configureMapView(MapView mapView) {
-        mapView.setScale(MapView.Scale.CLOSEST);
-        if (Item.isAboveBukkit111()) {
-            invokeMethodIfExists(mapView, "setUnlimitedTracking", true);
-        }
-    }
-
-    private static void setMapMeta(MapMeta mapMeta, MapView mapView, ItemStack mapItem) {
-        if (Item.isAboveBukkit111()) {
-            invokeMethodIfExists(mapMeta, "setMapView", mapView);
-        } else {
-            // For older versions, set the map ID by modifying the ItemStack directly
-            short mapID = getMapID(mapView);
-            setMapItemID(mapItem, mapID);
-        }
+        Material mapMaterial = Item.isAboveBukkit111() ? Material.FILLED_MAP : Material.MAP;
+        return new ItemStack(mapMaterial);
     }
 
     private static void setMapItemID(ItemStack mapItem, short mapID) {
@@ -75,28 +76,6 @@ public class QrCodeMap {
             setDurabilityMethod.invoke(mapItem, mapID);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    private static void invokeMethodIfExists(Object obj, String methodName, Object... args) {
-        try {
-            Class<?>[] parameterTypes = new Class<?>[args.length];
-            for (int i = 0; i < args.length; i++) {
-                parameterTypes[i] = args[i].getClass();
-            }
-            Method method = getMethod(obj, methodName, parameterTypes);
-            if(Objects.isNull(method)) return;
-            method.invoke(obj, args);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static Method getMethod(Object obj, String method, Class<?>... parameterTypes) {
-        try {
-            return obj.getClass().getMethod(method, parameterTypes);
-        } catch (Exception e) {
-            return null;
         }
     }
 
@@ -121,6 +100,7 @@ public class QrCodeMap {
 
     private static class QRCodeMapRenderer extends MapRenderer {
         private final BufferedImage image;
+        private boolean rendered = false;
 
         public QRCodeMapRenderer(BufferedImage image) {
             this.image = image;
@@ -128,7 +108,10 @@ public class QrCodeMap {
 
         @Override
         public void render(MapView mapView, MapCanvas mapCanvas, Player player) {
-            mapCanvas.drawImage(0, 0, image);
+            if (!rendered) {
+                mapCanvas.drawImage(0, 0, image);
+                rendered = true;
+            }
         }
     }
 }
