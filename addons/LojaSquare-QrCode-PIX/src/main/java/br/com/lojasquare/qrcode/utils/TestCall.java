@@ -44,7 +44,7 @@ public class TestCall {
 	private static void geraQrCodeCheckout() {
 		CheckoutResponse checkoutResponse = lsProvider.getQrCodePayment(Checkout.builder()
 						.carrinho(Collections.singletonList(ItemInfo.builder()
-										.produtoId(9812L).quantidade(1)
+										.produtoId(178L).quantidade(2)
 								.build()))
 						.cliente(Cliente.builder().clienteID(0L).build())
 						.gateway(LSGateway.PAGSQUARE.getGateway())

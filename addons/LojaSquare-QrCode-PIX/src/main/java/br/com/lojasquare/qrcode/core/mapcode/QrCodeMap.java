@@ -18,6 +18,8 @@ import org.bukkit.map.MapView;
 import java.awt.image.BufferedImage;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,10 +36,7 @@ public class QrCodeMap {
         MapMeta mapMeta = (MapMeta) mapItem.getItemMeta();
         MapView mapView = Bukkit.createMap(player.getWorld());
 
-        configureMapView(mapView);
-
-        mapView.getRenderers().clear();
-        mapView.addRenderer(new QRCodeMapRenderer(image));
+        configureMapView(mapView, image);
 
         setMapMeta(mapMeta, mapView, mapItem);
         mapMeta.setDisplayName(nomeMapa);
@@ -52,18 +51,20 @@ public class QrCodeMap {
         return new ItemStack(Material.getMaterial(mapMaterial));
     }
 
-    private static void configureMapView(MapView mapView) {
+    private static void configureMapView(MapView mapView, BufferedImage image) {
         mapView.setScale(MapView.Scale.CLOSEST);
         if (Item.isAboveBukkit111()) {
             invokeMethodIfExists(mapView, "setUnlimitedTracking", true);
         }
+
+        mapView.getRenderers().clear();
+        mapView.addRenderer(new QRCodeMapRenderer(image));
     }
 
     private static void setMapMeta(MapMeta mapMeta, MapView mapView, ItemStack mapItem) {
-        if (Item.isAboveBukkit111()) {
+        if(Item.isAboveBukkit111()) {
             invokeMethodIfExists(mapMeta, "setMapView", mapView);
         } else {
-            // For older versions, set the map ID by modifying the ItemStack directly
             short mapID = getMapID(mapView);
             setMapItemID(mapItem, mapID);
         }
@@ -72,6 +73,7 @@ public class QrCodeMap {
     private static void setMapItemID(ItemStack mapItem, short mapID) {
         try {
             Method setDurabilityMethod = ItemStack.class.getMethod("setDurability", short.class);
+            setDurabilityMethod.setAccessible(true);
             setDurabilityMethod.invoke(mapItem, mapID);
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,21 +82,22 @@ public class QrCodeMap {
 
     private static void invokeMethodIfExists(Object obj, String methodName, Object... args) {
         try {
-            Class<?>[] parameterTypes = new Class<?>[args.length];
-            for (int i = 0; i < args.length; i++) {
-                parameterTypes[i] = args[i].getClass();
+            Method method = getMethod(obj, methodName);
+            if(Objects.isNull(method)) {
+                Bukkit.getConsoleSender().sendMessage("§4[LSQrCode] §cThe method: §a"+methodName+"§c wasn't found at class: §a"+obj.getClass().getName());
+                return;
             }
-            Method method = getMethod(obj, methodName, parameterTypes);
-            if(Objects.isNull(method)) return;
+            method.setAccessible(true);
             method.invoke(obj, args);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    private static Method getMethod(Object obj, String method, Class<?>... parameterTypes) {
+    private static Method getMethod(Object obj, String method) {
         try {
-            return obj.getClass().getMethod(method, parameterTypes);
+            return Arrays.stream(obj.getClass().getMethods())
+                    .filter(m -> m.getName().equals(method))
+                    .findFirst().orElse(null);
         } catch (Exception e) {
             return null;
         }
@@ -121,6 +124,7 @@ public class QrCodeMap {
 
     private static class QRCodeMapRenderer extends MapRenderer {
         private final BufferedImage image;
+        private boolean rendered = false;
 
         public QRCodeMapRenderer(BufferedImage image) {
             this.image = image;
@@ -128,7 +132,10 @@ public class QrCodeMap {
 
         @Override
         public void render(MapView mapView, MapCanvas mapCanvas, Player player) {
-            mapCanvas.drawImage(0, 0, image);
+            if (!rendered) {
+                mapCanvas.drawImage(0, 0, image);
+                rendered = true;
+            }
         }
     }
 }

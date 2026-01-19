@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="LojaSquareV2" />
+        <module name="LS-QrCode" />
         <module name="LojaSquare" />
       </profile>
     </annotationProcessing>

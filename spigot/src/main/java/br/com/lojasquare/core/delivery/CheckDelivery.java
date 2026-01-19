@@ -74,9 +74,15 @@ public class CheckDelivery implements CheckService {
 		
 		pl.printDebug("§3[LojaSquare] §bCheca player: §a"+item.getPlayer()+"§b com inv vazio:");
 		if(!checaPlayerInvVazio(item, p)) return false;
+        pl.printDebug("§3[LojaSquare] §bCheca se nick do player e compativel para entrega. Nick esperado: §a"+item.getPlayer()+"§b, Nick encontrado: §a"+p.getName());
+        if(!isNickCompativelComEntrega(p, item)) return false;
 		
 		return true;
 	}
+
+    private boolean isNickCompativelComEntrega(Player p, ItemInfo itemInfo) {
+        return itemInfo.getPlayer().equalsIgnoreCase(p.getName());
+    }
 
 	private boolean checaPlayerInvVazio(ItemInfo item, final Player p) {
 		if(!Objects.isNull(p) && pl.getConfGrupos()

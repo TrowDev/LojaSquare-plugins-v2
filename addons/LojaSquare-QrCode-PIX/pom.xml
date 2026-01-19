@@ -56,6 +56,11 @@
     </build>
 
     <repositories>
+        <repository>
+            <id>maven_central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
 
         <repository>
             <id>spigot-repo</id>
@@ -80,6 +85,7 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
+<!--            <version>1.20.1-R0.1-SNAPSHOT</version>-->
             <scope>provided</scope>
         </dependency>
 

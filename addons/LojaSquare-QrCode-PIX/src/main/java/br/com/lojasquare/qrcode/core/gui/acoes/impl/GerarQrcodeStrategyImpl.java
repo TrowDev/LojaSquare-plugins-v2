@@ -98,13 +98,22 @@ public class GerarQrcodeStrategyImpl implements AcaoStrategy {
 
     private void geraMapaQrCode(Player p, CheckoutResponse checkoutResponse) throws UnsupportedEncodingException, WriterException {
         BufferedImage imgQrcode = QrCodeMap.generateQRCode(checkoutResponse.getUrlPayment());
+        if(Objects.isNull(imgQrcode)) {
+            p.sendMessage(pl.getMsg("Msg.Falha_Gerar_Qrcode").replace("@erro", "QrCode Image is Null"));
+            return;
+        }
 
         List<String> lore = new ArrayList<>();
         for(String linha : pl.getConfig().getStringList("Mapa.Item.Lore")) {
             lore.add(linha.replace("&", "§"));
         }
 
-        QrCodeMap.generateMap(imgQrcode, p, pl.getMsg("Mapa.Item.Nome"), lore);
-        p.sendMessage(pl.getMsg("Mapa.Msg_Ao_Gerar"));
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                QrCodeMap.generateMap(imgQrcode, p, pl.getMsg("Mapa.Item.Nome"), lore);
+                p.sendMessage(pl.getMsg("Mapa.Msg_Ao_Gerar"));
+            }
+        }.runTask(pl);
     }
 }

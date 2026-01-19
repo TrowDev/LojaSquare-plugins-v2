@@ -17,7 +17,7 @@ public class NbtItem {
             return nb;
         } catch (Exception e) {
             e.printStackTrace();
-            Bukkit.getConsoleSender().sendMessage("§4[LsQrCode] §cFalha ao gerar NBTItem do item: §a"+is.toString());
+            Bukkit.getConsoleSender().sendMessage("§4[LsQrCode] §cFalha ao gerar NBTItem do item: §a"+is);
             return null;
         }
     }
