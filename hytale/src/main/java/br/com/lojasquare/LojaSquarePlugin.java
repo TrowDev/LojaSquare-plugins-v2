@@ -1,5 +1,19 @@
 package br.com.lojasquare;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.annotation.Nonnull;
+
+import lombok.Getter;
+import lombok.Setter;
 import br.com.lojasquare.api.ProductActiveEvent;
 import br.com.lojasquare.api.ProductPreActiveEvent;
 import br.com.lojasquare.commands.CmdLSite;
@@ -16,14 +30,6 @@ import br.com.lojasquare.utils.SiteUtil;
 import br.com.lojasquare.utils.model.ValidaIpInfo;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.annotation.Nonnull;
-import java.nio.file.Path;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Classe principal do plugin LojaSquare para Hytale.
@@ -35,7 +41,7 @@ public class LojaSquarePlugin extends JavaPlugin {
 
     @Getter
     private ConfigManager configManager;
-    
+
     @Getter
     private ConfigManager confGrupos;
 
@@ -46,16 +52,18 @@ public class LojaSquarePlugin extends JavaPlugin {
 
     @Getter
     private List<String> produtosAtivados = new ArrayList<>();
-    
+
     @Getter
     private List<String> produtosConfigurados = new ArrayList<>();
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private ILSProvider lsProvider;
-    
-    @Getter @Setter
+
+    @Getter
+    @Setter
     private IRequestProvider requestProvider;
-    
+
     @Getter
     private SiteUtil siteUtil;
 
@@ -83,7 +91,7 @@ public class LojaSquarePlugin extends JavaPlugin {
         try {
             defineVariaveisAmbiente();
             String keyapi = getKeyAPI();
-            
+
             if (!checarServidorConfigurado()) {
                 return;
             }
@@ -130,8 +138,9 @@ public class LojaSquarePlugin extends JavaPlugin {
     private void carregaGruposEntregaConfigurados() {
         confGrupos = new ConfigManager("produtos", this);
         Set<String> grupos = confGrupos.getKeys("Grupos");
-        if (grupos == null || grupos.isEmpty()) return;
-        
+        if (grupos == null || grupos.isEmpty())
+            return;
+
         for (String v : grupos) {
             produtosConfigurados.add(v);
             if (confGrupos.getBoolean("Grupos." + v + ".Ativado")) {
@@ -149,7 +158,7 @@ public class LojaSquarePlugin extends JavaPlugin {
         siteUtil.setReadTimeout(configManager.getInt("LojaSquare.Read_Timeout", 3000));
         siteUtil.setDebug(debug);
         siteUtil.setServerRequest("https://api.lojasquare.net");
-        
+
         requestProvider = new RequestProviderImpl(siteUtil);
         lsProvider = new LSProviderImpl(requestProvider, this);
     }
@@ -180,7 +189,7 @@ public class LojaSquarePlugin extends JavaPlugin {
     }
 
     public Path getDataFolder() {
-        return this.getPluginDataFolder();
+        return java.nio.file.Paths.get("mods", "LojaSquare");
     }
 
     public String getKeyAPI() {
@@ -204,17 +213,29 @@ public class LojaSquarePlugin extends JavaPlugin {
         return tempoChecarItens < 20 ? 20 : tempoChecarItens;
     }
 
-    public boolean doSmartDelivery() { return smartDelivery; }
-    public boolean canDebug() { return debug; }
-    public String getServidor() { return servidor; }
-    public static LojaSquarePlugin getInstance() { return instance; }
+    public boolean doSmartDelivery() {
+        return smartDelivery;
+    }
+
+    public boolean canDebug() {
+        return debug;
+    }
+
+    public String getServidor() {
+        return servidor;
+    }
+
+    public static LojaSquarePlugin getInstance() {
+        return instance;
+    }
 
     public void log(String message) {
         System.out.println("[LojaSquare] " + message.replaceAll("§[0-9a-fk-or]", ""));
     }
 
     public void printDebug(String message) {
-        if (debug) log(message);
+        if (debug)
+            log(message);
     }
 
     public UUID getPlayerUUID(String playerName) {
@@ -229,7 +250,9 @@ public class LojaSquarePlugin extends JavaPlugin {
         return playerNameToUUID.containsKey(playerName.toLowerCase());
     }
 
-    public boolean isPlayerInventoryEmpty(UUID playerUUID) { return true; }
+    public boolean isPlayerInventoryEmpty(UUID playerUUID) {
+        return true;
+    }
 
     public void sendMessageToPlayer(UUID playerUUID, String message) {
         log("[Para " + playerUUID + "] " + message);
@@ -240,11 +263,13 @@ public class LojaSquarePlugin extends JavaPlugin {
     }
 
     public void handleProductPreActiveEvent(ProductPreActiveEvent event) {
-        if (produtoListener != null) produtoListener.handlePreActive(event);
+        if (produtoListener != null)
+            produtoListener.handlePreActive(event);
     }
 
     public void handleProductActiveEvent(ProductActiveEvent event) {
-        if (produtoListener != null) produtoListener.handleActiveDelivery(event);
+        if (produtoListener != null)
+            produtoListener.handleActiveDelivery(event);
     }
 
     public boolean handleLSiteCommand(String senderName, UUID senderUUID, boolean isPlayer, String[] args) {
@@ -258,6 +283,7 @@ public class LojaSquarePlugin extends JavaPlugin {
 
     public void removeOnlinePlayer(UUID uuid) {
         String name = onlinePlayers.remove(uuid);
-        if (name != null) playerNameToUUID.remove(name.toLowerCase());
+        if (name != null)
+            playerNameToUUID.remove(name.toLowerCase());
     }
 }
