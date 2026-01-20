@@ -1,0 +1,16 @@
+{
+    "Group": "TrowDev",
+    "Name": "LojaSquare",
+    "Version": "2.0.0",
+    "Authors": [
+        {
+            "Name": "TrowDev",
+            "Email": "admin@lojasquare.com.br",
+            "Url": "https://lojasquare.com.br"
+        }
+    ],
+    "Website": "https://lojasquare.com.br",
+    "Main": "br.com.lojasquare.LojaSquarePlugin",
+    "ServerVersion": "*",
+    "OptionalDependencies": {}
+}

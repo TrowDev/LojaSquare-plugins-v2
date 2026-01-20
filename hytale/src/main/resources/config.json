@@ -1,0 +1,21 @@
+{
+    "LojaSquare": {
+        "Debug": true,
+        "Smart_Delivery": true,
+        "SECRET_API": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "Servidor": "Nome-Do-Servidor",
+        "Token_Servidor": "BBBBBBBBBBBBBBBBBBBB",
+        "Connection_Timeout": 10000,
+        "Read_Timeout": 10000
+    },
+    "Config": {
+        "Tempo_Checar_Compras": 60
+    },
+    "Msg": {
+        "Produto_Nao_Configurado": "&4[LojaSquare] &cVocê tem um produto para ser entregue, porém o grupo do produto nao está configurado. Grupo: &a@grupo",
+        "Limpe_Seu_Inventario": "&4[LojaSquare] &cLimpe seu inventario para receber o produto do grupo &a@grupo",
+        "Use_Cmd_LSite": "&4[LojaSquare] &cUse: &a/lsite <ativar> &a<codigo>",
+        "Conta_Ativada": "&3[LojaSquare] &bConta ativada com sucesso.",
+        "Erro_Ao_Ativar_Conta": "&4[LojaSquare] &cCodigo de ativacao invalido ou sistema indisponivel para ativacao."
+    }
+}
