@@ -1,9 +1,0 @@
-{
-    "name": "LojaSquare",
-    "version": "2.0.0",
-    "main": "br.com.lojasquare.LojaSquarePlugin",
-    "author": "TrowDev",
-    "description": "Plugin de integração com a plataforma LojaSquare para entrega automática de produtos",
-    "website": "https://www.lojasquare.com.br/",
-    "dependencies": []
-}

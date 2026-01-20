@@ -1,5 +1,6 @@
 br/com/lojasquare/listener/ProdutoListener.class
 br/com/lojasquare/api/ProductPreActiveEvent.class
+com/hypixel/hytale/server/core/plugin/JavaPlugin.class
 br/com/lojasquare/utils/model/ProdutoInfo.class
 br/com/lojasquare/commands/CmdLSite.class
 br/com/lojasquare/providers/request/impl/RequestProviderImpl.class
@@ -10,6 +11,7 @@ br/com/lojasquare/utils/DateDuration.class
 br/com/lojasquare/core/delivery/CheckDelivery.class
 br/com/lojasquare/core/autoconfig/CheckCreateGroupItem.class
 br/com/lojasquare/utils/enums/LSResponseEnum.class
+com/hypixel/hytale/server/core/plugin/JavaPluginInit.class
 br/com/lojasquare/utils/ConfigManager.class
 br/com/lojasquare/utils/model/ItemInfo.class
 br/com/lojasquare/providers/request/IRequestProvider.class
@@ -17,6 +19,7 @@ br/com/lojasquare/providers/lojasquare/impl/LSProviderImpl.class
 br/com/lojasquare/utils/HttpResponse.class
 br/com/lojasquare/utils/SiteUtil.class
 br/com/lojasquare/LojaSquarePlugin.class
+com/hypixel/hytale/server/core/plugin/CommandRegistry.class
 br/com/lojasquare/core/CheckService.class
 br/com/lojasquare/api/ProductActiveEvent.class
 br/com/lojasquare/utils/enums/LSEntregaStatus.class

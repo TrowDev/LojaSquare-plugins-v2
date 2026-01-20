@@ -8,14 +8,17 @@
 /home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/br/com/lojasquare/listener/ProdutoListener.java
 /home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/br/com/lojasquare/utils/model/ItemInfo.java
 /home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/br/com/lojasquare/utils/ConfigManager.java
+/home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/com/hypixel/hytale/server/core/plugin/JavaPlugin.java
 /home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/br/com/lojasquare/core/autoconfig/CheckCreateGroupItem.java
 /home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/br/com/lojasquare/utils/enums/LSResponseEnum.java
 /home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/br/com/lojasquare/providers/request/impl/RequestProviderImpl.java
 /home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/br/com/lojasquare/utils/SiteUtil.java
+/home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/com/hypixel/hytale/server/core/plugin/JavaPluginInit.java
 /home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/br/com/lojasquare/core/CheckService.java
 /home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/br/com/lojasquare/api/ProductPreActiveEvent.java
 /home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/br/com/lojasquare/utils/DateDuration.java
 /home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/br/com/lojasquare/core/delivery/CheckDelivery.java
 /home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/br/com/lojasquare/api/ProductActiveEvent.java
 /home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/br/com/lojasquare/providers/request/IRequestProvider.java
+/home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/com/hypixel/hytale/server/core/plugin/CommandRegistry.java
 /home/renato/dev/MC-Plugins/LS-v2/hytale/src/main/java/br/com/lojasquare/LojaSquarePlugin.java

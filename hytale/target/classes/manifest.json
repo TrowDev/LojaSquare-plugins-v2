@@ -5,11 +5,11 @@
     "Authors": [
         {
             "Name": "TrowDev",
-            "Email": "contato@lojasquare.com.br",
-            "Url": "https://www.lojasquare.com.br"
+            "Email": "admin@lojasquare.com.br",
+            "Url": "https://lojasquare.com.br"
         }
     ],
-    "Website": "https://www.lojasquare.com.br",
+    "Website": "https://lojasquare.com.br",
     "Main": "br.com.lojasquare.LojaSquarePlugin",
     "ServerVersion": "*",
     "OptionalDependencies": {}
