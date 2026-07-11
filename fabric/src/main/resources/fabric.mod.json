@@ -1,0 +1,24 @@
+{
+    "schemaVersion": 1,
+    "id": "lojasquare",
+    "version": "${version}",
+    "name": "LojaSquare",
+    "description": "Integracao do servidor Minecraft com a plataforma LojaSquare para venda e entrega automatizada de produtos.",
+    "authors": ["TrowDev"],
+    "contact": {
+        "homepage": "https://lojasquare.net/",
+        "sources": "https://github.com/TrowDev/LS-Plugins"
+    },
+    "license": "Proprietary",
+    "icon": "assets/lojasquare/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": ["br.com.lojasquare.LojasquareMod"]
+    },
+    "depends": {
+        "fabricloader": ">=0.16.0",
+        "minecraft": "~1.21.1",
+        "java": ">=21",
+        "fabric-api": "*"
+    }
+}

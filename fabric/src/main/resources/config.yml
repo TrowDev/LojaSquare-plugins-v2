@@ -1,0 +1,10 @@
+LojaSquare:
+  SECRET_API: "sua-chave-aqui"
+  Servidor: "Nome-Do-Servidor"
+  Token_Servidor: "token-do-servidor"
+  Connection_Timeout: 10000
+  Read_Timeout: 10000
+  Smart_Delivery: true
+  Debug: true
+Config:
+  Tempo_Checar_Compras: 60

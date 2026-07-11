@@ -1,0 +1,12 @@
+Grupos:
+  VIPDiamante:
+    Ativado: false
+    Ativar_Com_Player_Offline: false
+    Enviar_Mensagem: false
+    Mensagem_Receber_Ao_Ativar_Produto:
+      - "&eOla &a@player"
+      - "&eO produto que voce adquiriu (&a@produto&e) foi ativado!"
+    Money: false
+    Quantidade_De_Money: 0
+    Cmds_A_Executar:
+      - "gerarvip VIPDiamante @dias @qnt @player"
