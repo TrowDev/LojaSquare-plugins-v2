@@ -31,6 +31,8 @@ public class DeliveryListener {
     private ActionResult preActive(ServerPlayerEntity player, ItemInfo item) {
         mod.printDebug("[LojaSquare] preActive");
 
+        if (item == null) return ActionResult.FAIL;
+
         CompletableFuture.runAsync(() -> {
             mod.printDebug("[LojaSquare] Antes update delivery.");
 

@@ -82,10 +82,14 @@ public class LojasquareMod implements ModInitializer {
         this.server = server;
         LOGGER.info("[LojaSquare] Servidor iniciado, validando IP e iniciando servicos...");
 
-        checarIPCorreto();
-        checagensDeInicializacao();
-
-        deliveryListener = new DeliveryListener(this, lsProvider);
+        checarIPCorreto().thenAccept(ipOk -> {
+            if (ipOk) {
+                checagensDeInicializacao();
+                deliveryListener = new DeliveryListener(this, lsProvider);
+            } else {
+                LOGGER.warn("[LojaSquare] IP nao validado. Servicos de entrega nao serao iniciados.");
+            }
+        });
     }
 
     private void onServerStopping(MinecraftServer server) {
@@ -134,19 +138,20 @@ public class LojasquareMod implements ModInitializer {
         LOGGER.info("[LojaSquare] Grupos de entregas foram carregados com sucesso!");
     }
 
-    private void checarIPCorreto() {
-        CompletableFuture.runAsync(() -> {
+    private CompletableFuture<Boolean> checarIPCorreto() {
+        return CompletableFuture.supplyAsync(() -> {
             ValidaIpInfo result = lsProvider.getIpMaquina();
             if (Objects.isNull(result) || !result.isSucesso()) {
-                LOGGER.info("[LojaSquare] Desativado...");
-                LOGGER.info("Criador: Trow");
-                LOGGER.info("Motivo: " + (result != null ? result.getIp() : "Erro de conexao"));
-                LOGGER.info("Key-API: " + getKeyAPI());
-                LOGGER.info("Para atualizar o IP, acesse: https://painel.lojasquare.net/pages/config/site e clique em 'Ativacao Automatica'");
-                return;
+                LOGGER.warn("[LojaSquare] Desativado... (IP invalido)");
+                LOGGER.warn("Criador: Trow");
+                LOGGER.warn("Motivo: " + (result != null ? result.getIp() : "Erro de conexao"));
+                LOGGER.warn("Key-API: " + getKeyAPI());
+                LOGGER.warn("Para atualizar o IP, acesse: https://painel.lojasquare.net/pages/config/site e clique em 'Ativacao Automatica'");
+                return false;
             }
             siteUtil.setIpMaquina(result.getIp());
             LOGGER.info("[LojaSquare] IP da maquina validado!");
+            return true;
         });
     }
 
