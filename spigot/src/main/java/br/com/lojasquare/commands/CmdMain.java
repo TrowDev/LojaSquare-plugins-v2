@@ -4,11 +4,15 @@ import br.com.lojasquare.LojaSquare;
 import br.com.lojasquare.providers.lojasquare.ILSProvider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
 
 @AllArgsConstructor
 public class CmdMain implements CommandExecutor {
@@ -22,6 +26,19 @@ public class CmdMain implements CommandExecutor {
             if(args.length == 0) {
                 sender.sendMessage(pl.getMsg("Msg.Use_Cmd_LSite"));
                 return false;
+            }
+            if(args[0].equalsIgnoreCase("reload")) {
+                if(!sender.isOp() && !sender.hasPermission("lojasquare.reload") && !(sender instanceof ConsoleCommandSender)) {
+                    sender.sendMessage("§cVoce nao tem permissao para recarregar o plugin.");
+                    return true;
+                }
+                sender.sendMessage("§3[LojaSquare] §bRecarregando configuracoes e produtos...");
+                LojaSquare.setProdutosAtivados(new ArrayList<>());
+                LojaSquare.setProdutosConfigurados(new ArrayList<>());
+                pl.reloadConfig();
+                Bukkit.getPluginManager().disablePlugin(pl);
+                Bukkit.getPluginManager().enablePlugin(pl);
+                return true;
             }
             if(args[0].equalsIgnoreCase("ativar")) {
                 if(args.length < 2) {

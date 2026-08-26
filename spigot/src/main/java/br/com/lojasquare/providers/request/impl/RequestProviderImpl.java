@@ -7,7 +7,6 @@ import br.com.lojasquare.utils.SiteUtil;
 import br.com.lojasquare.utils.enums.LSResponseEnum;
 import com.google.gson.JsonParser;
 import lombok.Getter;
-import lombok.var;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
@@ -26,10 +25,10 @@ public class RequestProviderImpl implements IRequestProvider {
 
     @Override
     public HttpResponse get(String url) throws IOException {
-        var msCalc  = new DateDuration();
-        var parser  = new JsonParser();
-        var urlObj  = new URL(url);
-        var ms      = 0L;
+        DateDuration msCalc  = new DateDuration();
+        JsonParser parser  = new JsonParser();
+        URL urlObj  = new URL(url);
+        long ms      = 0L;
 
         HttpsURLConnection c = buildDefaultConnection((HttpsURLConnection) urlObj.openConnection(), "GET");
 
@@ -67,10 +66,10 @@ public class RequestProviderImpl implements IRequestProvider {
 
     @Override
     public HttpResponse put(String url) throws IOException {
-        var msCalc  = new DateDuration();
-        var parser  = new JsonParser();
-        var urlObj  = new URL(url);
-        var ms      = 0L;
+        DateDuration msCalc  = new DateDuration();
+        JsonParser parser  = new JsonParser();
+        URL urlObj  = new URL(url);
+        long ms      = 0L;
 
         HttpsURLConnection c = buildDefaultConnection((HttpsURLConnection) urlObj.openConnection(), "PUT");
 
