@@ -6,28 +6,30 @@ import br.com.lojasquare.core.CheckService;
 import br.com.lojasquare.providers.lojasquare.ILSProvider;
 import br.com.lojasquare.utils.enums.LSEntregaStatus;
 import br.com.lojasquare.utils.model.ItemInfo;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
 import java.util.Objects;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CheckDelivery implements CheckService {
 	
-	@Getter private LojaSquare pl;
-	@Getter private ILSProvider lsProvider;
+	private final LojaSquare pl;
+	private final ILSProvider lsProvider;
+	@Getter private BukkitTask task;
 	
 	public void execute(ConsoleCommandSender b){
 		b.sendMessage("§3[LojaSquare] §bIniciando checagem automatica de entregas...");
 		b.sendMessage("§3[LojaSquare] §bTempo de checagem a cada §a"+pl.getTempoChecarItens()+"§b segundos.");
-		new BukkitRunnable() {
+		task = new BukkitRunnable() {
 			public void run() {
 				List<ItemInfo> itens = lsProvider.getTodasEntregas(LSEntregaStatus.PENDENTE);
 				pl.printDebug("");
@@ -44,6 +46,10 @@ public class CheckDelivery implements CheckService {
 				}
 			}
 		}.runTaskTimerAsynchronously(pl, 20*10, 20*pl.getTempoChecarItens());
+	}
+
+	public void cancelTask() {
+		if(task != null && !task.isCancelled()) task.cancel();
 	}
 
 	private void callEventoEntregarItem(final ItemInfo item, final Player p) {

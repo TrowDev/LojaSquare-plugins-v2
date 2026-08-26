@@ -16,6 +16,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -38,6 +39,8 @@ public class LojaSquare extends JavaPlugin{
 	//
 	@Getter @Setter private ILSProvider lsProvider;
 	@Getter @Setter private IRequestProvider requestProvider;
+	@Getter private ProdutoListener produtoListener;
+	@Getter private CheckDelivery checkDelivery;
 	
 	public void onEnable() {
 		ConsoleCommandSender b = Bukkit.getConsoleSender();
@@ -51,18 +54,8 @@ public class LojaSquare extends JavaPlugin{
 			b.sendMessage("§3[LojaSquare] §bAtivado...");
 			b.sendMessage("§3Criador: §bTrow");
 			b.sendMessage("§bDesejo a voce uma otima experiencia com o §dLojaSquare§b.");
-			// Carregando todos os grupos de produtos configurados
-			carregaGruposEntregaConfigurados(b);
-			
-			// INICIO definindo variaveis do LojaSquare
-			plu.prepareWebServiceConnection(b, keyapi, lsProvider, requestProvider, ls, pl);
-			checarIPCorreto(b, keyapi);
-			// FIM definindo variaveis do LojaSquare
+			inicializaLojaSquare(b, plu, keyapi);
 
-			registraEventosCmds();
-			
-			checagensDeInicializacao(b);
-			
 			b.sendMessage("§6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
 		}catch (Exception e){
 			e.printStackTrace();
@@ -72,16 +65,47 @@ public class LojaSquare extends JavaPlugin{
 		}
 	}
 
+	private void inicializaLojaSquare(ConsoleCommandSender b, PluginLoadUtil plu, String keyapi) {
+		carregaGruposEntregaConfigurados(b);
+		plu.prepareWebServiceConnection(b, keyapi, lsProvider, requestProvider, ls, pl);
+		checarIPCorreto(b, keyapi);
+		registraEventosCmds();
+		checagensDeInicializacao(b);
+	}
+
+	public void recarregar() {
+		ConsoleCommandSender b = Bukkit.getConsoleSender();
+		try{
+			reloadConfig();
+			defineVariaveisAmbiente();
+			setProdutosAtivados(new ArrayList<>());
+			setProdutosConfigurados(new ArrayList<>());
+			if(!checarServidorConfigurado(b)) return;
+			b.sendMessage("§3[LojaSquare] §bRecarregando...");
+			PluginLoadUtil plu = new PluginLoadUtil();
+			inicializaLojaSquare(b, plu, getKeyAPI());
+			b.sendMessage("§6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+		}catch (Exception e){
+			e.printStackTrace();
+			b.sendMessage("§4[LojaSquare] §cErro ao recarregar o plugin LojaSquare.");
+			b.sendMessage("§4[LojaSquare] §cErro: §a"+e.getMessage());
+		}
+	}
+
 	private void registraEventosCmds() {
-		Bukkit.getPluginManager().registerEvents(new ProdutoListener(pl,lsProvider), this);
+		if(produtoListener != null) HandlerList.unregisterAll(produtoListener);
+		produtoListener = new ProdutoListener(pl, lsProvider);
+		Bukkit.getPluginManager().registerEvents(produtoListener, this);
 
 		getCommand("lsite").setExecutor(new CmdMain(pl, lsProvider));
 	}
 
 	private void checagensDeInicializacao(ConsoleCommandSender b) {
+		if(checkDelivery != null) checkDelivery.cancelTask();
+		checkDelivery = new CheckDelivery(pl, lsProvider);
 		List<CheckService> checkServices = new ArrayList<>();
 		checkServices.add(new CheckCreateGroupItem(pl, lsProvider));
-		checkServices.add(new CheckDelivery(pl, lsProvider));
+		checkServices.add(checkDelivery);
 
 		checkServices.forEach(s -> s.execute(b));
 	}

@@ -4,15 +4,12 @@ import br.com.lojasquare.LojaSquare;
 import br.com.lojasquare.providers.lojasquare.ILSProvider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.ArrayList;
 
 @AllArgsConstructor
 public class CmdMain implements CommandExecutor {
@@ -33,11 +30,7 @@ public class CmdMain implements CommandExecutor {
                     return true;
                 }
                 sender.sendMessage("§3[LojaSquare] §bRecarregando configuracoes e produtos...");
-                LojaSquare.setProdutosAtivados(new ArrayList<>());
-                LojaSquare.setProdutosConfigurados(new ArrayList<>());
-                pl.reloadConfig();
-                Bukkit.getPluginManager().disablePlugin(pl);
-                Bukkit.getPluginManager().enablePlugin(pl);
+                pl.recarregar();
                 return true;
             }
             if(args[0].equalsIgnoreCase("ativar")) {
